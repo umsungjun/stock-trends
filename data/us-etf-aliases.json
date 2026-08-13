@@ -1,0 +1,398 @@
+{
+  "SPY": {
+    "display": "S&P500",
+    "toss": "SPDR S&P500 ETF 트러스트"
+  },
+  "VOO": {
+    "display": "뱅가드 S&P500",
+    "toss": "뱅가드 S&P500 ETF"
+  },
+  "IVV": {
+    "display": "아이셰어즈 S&P500",
+    "toss": "아이셰어즈 S&P500 ETF"
+  },
+  "QQQ": {
+    "display": "나스닥100",
+    "toss": "인베스코 QQQ ETF"
+  },
+  "QQQM": {
+    "display": "나스닥100 미니",
+    "toss": "인베스코 나스닥 100 ETF"
+  },
+  "DIA": {
+    "display": "다우존스30",
+    "toss": "SPDR 다우존스 ETF"
+  },
+  "IWM": {
+    "display": "러셀2000",
+    "toss": "아이셰어즈 러셀2000 ETF"
+  },
+  "VTI": {
+    "display": "미국 전체시장",
+    "toss": "뱅가드 미국 주식 ETF"
+  },
+  "VT": {
+    "display": "전세계 주식",
+    "toss": "뱅가드 글로벌 주식 ETF"
+  },
+  "RSP": {
+    "display": "S&P500 동일가중",
+    "toss": "인베스코 S&P500 동일비중 ETF"
+  },
+  "SCHD": {
+    "display": "슈왑 미국 배당주",
+    "toss": "슈왑 미국 배당주 ETF"
+  },
+  "VIG": {
+    "display": "배당성장",
+    "toss": "뱅가드 미국 배당성장주 ETF"
+  },
+  "VYM": {
+    "display": "고배당",
+    "toss": "뱅가드 미국 고배당주 ETF"
+  },
+  "DGRO": {
+    "display": "배당성장 아이셰어즈",
+    "toss": "아이셰어즈 배당성장주 ETF"
+  },
+  "JEPI": {
+    "display": "JP모건 커버드콜",
+    "toss": "JP모건 커버드콜 옵션 ETF"
+  },
+  "JEPQ": {
+    "display": "JP모건 나스닥 커버드콜",
+    "toss": "JP모건 나스닥 프리미엄 인컴 ETF"
+  },
+  "SPYD": {
+    "display": "S&P500 고배당",
+    "toss": "SPDR S&P500 고배당 ETF"
+  },
+  "SPHD": {
+    "display": "고배당 저변동",
+    "toss": "인베스코 고배당 저변동 ETF"
+  },
+  "SOXX": {
+    "display": "반도체 아이셰어즈",
+    "toss": "아이셰어즈 반도체 ETF"
+  },
+  "SMH": {
+    "display": "반도체 반에크",
+    "toss": "반에크 반도체 ETF"
+  },
+  "XLK": {
+    "display": "기술",
+    "toss": "SPDR 기술주 ETF"
+  },
+  "XLF": {
+    "display": "금융",
+    "toss": "SPDR 금융주 ETF"
+  },
+  "XLE": {
+    "display": "에너지",
+    "toss": "SPDR 미국 에너지 ETF"
+  },
+  "XLV": {
+    "display": "헬스케어",
+    "toss": "SPDR 헬스케어 ETF"
+  },
+  "XLI": {
+    "display": "산업재",
+    "toss": "SPDR 산업재 ETF"
+  },
+  "XLY": {
+    "display": "경기소비재",
+    "toss": "SPDR 임의소비재 ETF"
+  },
+  "XLP": {
+    "display": "필수소비재",
+    "toss": "SPDR 필수소비재 ETF"
+  },
+  "XLU": {
+    "display": "유틸리티",
+    "toss": "SPDR S&P500 유틸리티 ETF"
+  },
+  "XLRE": {
+    "display": "리츠",
+    "toss": "SPDR 부동산/리츠 ETF"
+  },
+  "XLB": {
+    "display": "소재",
+    "toss": "SPDR 원자재 ETF"
+  },
+  "XLC": {
+    "display": "커뮤니케이션",
+    "toss": "SPDR 통신/미디어 ETF"
+  },
+  "IBB": {
+    "display": "바이오테크",
+    "toss": "아이셰어즈 미국 바이오테크 ETF"
+  },
+  "ITA": {
+    "display": "항공우주·방산",
+    "toss": "아이셰어즈 항공우주/방산주 ETF"
+  },
+  "IYW": {
+    "display": "미국 기술",
+    "toss": "아이셰어즈 미국 IT기업 ETF"
+  },
+  "ARKK": {
+    "display": "아크 혁신",
+    "toss": "아크 이노베이션 액티브 ETF"
+  },
+  "ARKG": {
+    "display": "아크 게놈",
+    "toss": "아크 유전공학 액티브 ETF"
+  },
+  "ARKW": {
+    "display": "아크 인터넷",
+    "toss": "아크 차세대 인터넷 ETF"
+  },
+  "BOTZ": {
+    "display": "로보틱스·AI",
+    "toss": "글로벌엑스 로봇공학 AI ETF"
+  },
+  "ROBO": {
+    "display": "로보틱스 자동화",
+    "toss": "로보 글로벌 로보틱스/자동화 ETF"
+  },
+  "LIT": {
+    "display": "리튬·배터리",
+    "toss": "글로벌엑스 리튬 배터리 ETF"
+  },
+  "ICLN": {
+    "display": "청정에너지",
+    "toss": "아이셰어즈 글로벌 클린에너지 ETF"
+  },
+  "TAN": {
+    "display": "태양광",
+    "toss": "인베스코 태양광 ETF"
+  },
+  "DRIV": {
+    "display": "자율주행·전기차",
+    "toss": "글로벌엑스 자율주행 전기차 ETF"
+  },
+  "MOAT": {
+    "display": "경제적 해자",
+    "toss": "반에크 경제적 해자 ETF"
+  },
+  "QUAL": {
+    "display": "퀄리티 팩터",
+    "toss": "아이셰어즈 미국 퀄리티 ETF"
+  },
+  "MTUM": {
+    "display": "모멘텀 팩터",
+    "toss": "아이셰어즈 미국 모멘텀 ETF"
+  },
+  "VUG": {
+    "display": "뱅가드 성장주",
+    "toss": "뱅가드 미국 대형 성장주 ETF"
+  },
+  "VTV": {
+    "display": "뱅가드 가치주",
+    "toss": "뱅가드 미국 대형 가치주 ETF"
+  },
+  "SCHG": {
+    "display": "슈왑 대형 성장주",
+    "toss": "슈왑 미국 성장주 ETF"
+  },
+  "TQQQ": {
+    "display": "나스닥100 3배",
+    "toss": "프로셰어즈 QQQ 3배 ETF"
+  },
+  "SQQQ": {
+    "display": "나스닥100 -3배",
+    "toss": "프로셰어즈 QQQ 3배 인버스 ETF"
+  },
+  "UPRO": {
+    "display": "S&P500 3배",
+    "toss": "프로셰어즈 S&P500 3배 ETF"
+  },
+  "SOXL": {
+    "display": "반도체 3배",
+    "toss": "디렉시온 미국 반도체 3배 ETF"
+  },
+  "SOXS": {
+    "display": "반도체 -3배",
+    "toss": "디렉시온 미국 반도체 3배 인버스 ETF"
+  },
+  "TECL": {
+    "display": "기술주 3배",
+    "toss": "디렉시온 빅테크 3배 ETF"
+  },
+  "TMF": {
+    "display": "장기채 3배",
+    "toss": "디렉시온 20년 미국채 3배 ETF"
+  },
+  "QLD": {
+    "display": "나스닥100 2배",
+    "toss": "프로셰어즈 QQQ 2배 ETF"
+  },
+  "SSO": {
+    "display": "S&P500 2배",
+    "toss": "프로셰어즈 S&P500 2배 ETF"
+  },
+  "TLT": {
+    "display": "미국 장기국채",
+    "toss": "아이셰어즈 미국 초장기 국채 ETF"
+  },
+  "IEF": {
+    "display": "미국 중기국채",
+    "toss": "아이셰어즈 미국 장기 국채 ETF"
+  },
+  "SHY": {
+    "display": "미국 단기국채",
+    "toss": "아이셰어즈 미국 1~3년 만기 국채 ETF"
+  },
+  "BND": {
+    "display": "미국 종합채권",
+    "toss": "뱅가드 미국 채권 ETF"
+  },
+  "AGG": {
+    "display": "미국 종합채권 아이셰어즈",
+    "toss": "아이셰어즈 미국 채권 ETF"
+  },
+  "LQD": {
+    "display": "투자등급 회사채",
+    "toss": "아이셰어즈 미국 투자등급 회사채 ETF"
+  },
+  "HYG": {
+    "display": "하이일드 회사채",
+    "toss": "아이셰어즈 투기등급 회사채 ETF"
+  },
+  "TIP": {
+    "display": "물가연동국채",
+    "toss": "아이셰어즈 미국 물가채 ETF"
+  },
+  "SGOV": {
+    "display": "초단기국채",
+    "toss": "아이셰어즈 초단기 미국 국고채 ETF"
+  },
+  "BIL": {
+    "display": "1-3개월 국채",
+    "toss": "SPDR 초단기 국채 ETF"
+  },
+  "GLD": {
+    "display": "금",
+    "toss": "SPDR 골드 셰어즈 ETF"
+  },
+  "IAU": {
+    "display": "금 아이셰어즈",
+    "toss": "아이셰어즈 금 ETF"
+  },
+  "SLV": {
+    "display": "은",
+    "toss": "아이셰어즈 은 현물 ETF"
+  },
+  "GDX": {
+    "display": "금광기업",
+    "toss": "반에크 금광 ETF"
+  },
+  "USO": {
+    "display": "원유",
+    "toss": "WTI유 선물 ETF"
+  },
+  "DBC": {
+    "display": "원자재 종합",
+    "toss": "인베스코 원자재 지수 ETF"
+  },
+  "PDBC": {
+    "display": "원자재 액티브",
+    "toss": "인베스코 원자재 파생 ETF"
+  },
+  "EWY": {
+    "display": "한국",
+    "toss": "아이셰어즈 대한민국 ETF"
+  },
+  "EWJ": {
+    "display": "일본",
+    "toss": "아이셰어즈 일본 ETF"
+  },
+  "MCHI": {
+    "display": "중국",
+    "toss": "아이셰어즈 중국 ETF"
+  },
+  "FXI": {
+    "display": "중국 대형주",
+    "toss": "아이셰어즈 중국 대형주 ETF"
+  },
+  "INDA": {
+    "display": "인도",
+    "toss": "아이셰어즈 인도 ETF"
+  },
+  "EWT": {
+    "display": "대만",
+    "toss": "아이셰어즈 대만 ETF"
+  },
+  "VEA": {
+    "display": "선진국 (미국 제외)",
+    "toss": "뱅가드 선진국 주식 ETF"
+  },
+  "VWO": {
+    "display": "신흥국",
+    "toss": "뱅가드 신흥국 ETF"
+  },
+  "EFA": {
+    "display": "선진국 아이셰어즈",
+    "toss": "아이셰어즈 선진국 ETF"
+  },
+  "IEFA": {
+    "display": "선진국 코어",
+    "toss": "아이셰어즈 선진국 ETF"
+  },
+  "EEM": {
+    "display": "신흥국 아이셰어즈",
+    "toss": "아이셰어즈 아시아 신흥국 ETF "
+  },
+  "IBIT": {
+    "display": "비트코인 블랙록",
+    "toss": "아이셰어즈 비트코인 ETF"
+  },
+  "FBTC": {
+    "display": "비트코인 피델리티",
+    "toss": "피델리티 와이즈 오리진 비트코인 ETF"
+  },
+  "GBTC": {
+    "display": "비트코인 그레이스케일",
+    "toss": "그레이스케일 비트코인 ETF"
+  },
+  "ETHA": {
+    "display": "이더리움 블랙록",
+    "toss": "아이셰어즈 이더리움 현물 ETF"
+  },
+  "BITO": {
+    "display": "비트코인 선물",
+    "toss": "프로셰어즈 비트코인 선물 ETF"
+  },
+  "VNQ": {
+    "display": "미국 리츠",
+    "toss": "뱅가드 미국 부동산 ETF"
+  },
+  "SCHH": {
+    "display": "슈왑 리츠",
+    "toss": "슈왑 미국 리츠 ETF"
+  },
+  "VIXY": {
+    "display": "변동성 지수",
+    "toss": "프로셰어즈 VIX 단기선물 ETF"
+  },
+  "COWZ": {
+    "display": "잉여현금흐름",
+    "toss": "PACER 캐시 카우 100 ETF"
+  },
+  "AVUV": {
+    "display": "소형 가치주",
+    "toss": "아메리칸 센추리 ETF 트러스트 아반티스 미국 소형 가치주 ETF"
+  },
+  "SPLG": {
+    "display": "S&P500 저비용",
+    "toss": null
+  },
+  "SPYG": {
+    "display": "S&P500 성장주",
+    "toss": "SPDR S&P500 성장 ETF"
+  },
+  "SPYV": {
+    "display": "S&P500 가치주",
+    "toss": "SPDR S&P500 가치주 ETF"
+  }
+}

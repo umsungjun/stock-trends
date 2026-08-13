@@ -1,0 +1,595 @@
+{
+  "AGG": {
+    "reutersCode": "AGG",
+    "name": "iShares Core US Aggregate Bond ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "ARKG": {
+    "reutersCode": "ARKG.K",
+    "name": "ARK Genomic Revolution ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 3
+  },
+  "ARKK": {
+    "reutersCode": "ARKK.K",
+    "name": "ARK Innovation ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 3
+  },
+  "ARKW": {
+    "reutersCode": "ARKW.K",
+    "name": "ARK Next Generation Internet ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 3
+  },
+  "AVUV": {
+    "reutersCode": "AVUV.K",
+    "name": "Avantis US Small Cap Value ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 3
+  },
+  "BIL": {
+    "reutersCode": "BIL",
+    "name": "State Street SPDR Bloomberg 1-3 Month T-Bill ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "BITO": {
+    "reutersCode": "BITO.K",
+    "name": "ProShares Bitcoin ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 3
+  },
+  "BND": {
+    "reutersCode": "BND.O",
+    "name": "Vanguard Total Bond Market Index Fund",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "BOTZ": {
+    "reutersCode": "BOTZ.O",
+    "name": "Global X Robotics and Artificial Intelligence ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "COWZ": {
+    "reutersCode": "COWZ.K",
+    "name": "Pacer US Cash Cows 100 ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 3
+  },
+  "DBC": {
+    "reutersCode": "DBC",
+    "name": "Invesco DB Commodity Index Tracking Fund",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "DGRO": {
+    "reutersCode": "DGRO.K",
+    "name": "iShares Core Dividend Growth ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 3
+  },
+  "DIA": {
+    "reutersCode": "DIA",
+    "name": "State Street SPDR Dow Jones Indust Avg ETF Trust",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "DRIV": {
+    "reutersCode": "DRIV.O",
+    "name": "Global X Autonomous & Electric Vehicles ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "EEM": {
+    "reutersCode": "EEM",
+    "name": "iShares MSCI Emerging Markets ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "EFA": {
+    "reutersCode": "EFA",
+    "name": "iShares MSCI EAFE ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "ETHA": {
+    "reutersCode": "ETHA.O",
+    "name": "iShares Ethereum Trust ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "EWJ": {
+    "reutersCode": "EWJ",
+    "name": "iShares MSCI Japan ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "EWT": {
+    "reutersCode": "EWT",
+    "name": "Ishares Msci Taiwan ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "EWY": {
+    "reutersCode": "EWY",
+    "name": "Ishares Msci South Korea ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "FBTC": {
+    "reutersCode": "FBTC.K",
+    "name": "Fidelity Wise Origin Bitcoin Fund",
+    "checkedAt": "2026-08-13",
+    "attempts": 3
+  },
+  "FXI": {
+    "reutersCode": "FXI",
+    "name": "iShares China Large-Cap ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "GBTC": {
+    "reutersCode": "GBTC.K",
+    "name": "Grayscale Bitcoin Trust ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 3
+  },
+  "GDX": {
+    "reutersCode": "GDX",
+    "name": "VanEck Gold Miners ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "GLD": {
+    "reutersCode": "GLD",
+    "name": "SPDR Gold Shares",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "HYG": {
+    "reutersCode": "HYG",
+    "name": "iShares iBoxx $ High Yield Corporate Bond ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "IAU": {
+    "reutersCode": "IAU",
+    "name": "iShares Gold Trust",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "IBB": {
+    "reutersCode": "IBB.O",
+    "name": "iShares Biotechnology ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "IBIT": {
+    "reutersCode": "IBIT.O",
+    "name": "iShares Bitcoin Trust ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "ICLN": {
+    "reutersCode": "ICLN.O",
+    "name": "iShares Global Clean Energy ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "IEF": {
+    "reutersCode": "IEF.O",
+    "name": "iShares 7-10 Year Treasury Bond ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "IEFA": {
+    "reutersCode": "IEFA.K",
+    "name": "iShares Core MSCI EAFE ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 3
+  },
+  "INDA": {
+    "reutersCode": "INDA.K",
+    "name": "iShares MSCI India ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 3
+  },
+  "ITA": {
+    "reutersCode": "ITA",
+    "name": "iShares US Aerospace & Defense ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "IVV": {
+    "reutersCode": "IVV",
+    "name": "iShares Core S&P 500 ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "IWM": {
+    "reutersCode": "IWM",
+    "name": "iShares Russell 2000 ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "IYW": {
+    "reutersCode": "IYW",
+    "name": "iShares US Technology ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "JEPI": {
+    "reutersCode": "JEPI.K",
+    "name": "JPMorgan Equity Premium Income ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 3
+  },
+  "JEPQ": {
+    "reutersCode": "JEPQ.O",
+    "name": "JPMorgan Nasdaq Equity Premium Income ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "LIT": {
+    "reutersCode": "LIT",
+    "name": "Global X Lithium & Battery Tech ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "LQD": {
+    "reutersCode": "LQD",
+    "name": "iShares iBoxx $ Inv Grade Corporate Bond ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "MCHI": {
+    "reutersCode": "MCHI.O",
+    "name": "iShares MSCI China ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "MOAT": {
+    "reutersCode": "MOAT.K",
+    "name": "VanEck Morningstar Wide Moat ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 3
+  },
+  "MTUM": {
+    "reutersCode": "MTUM.K",
+    "name": "iShares MSCI USA Momentum Factor ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 3
+  },
+  "PDBC": {
+    "reutersCode": "PDBC.O",
+    "name": "Invesco Optimum Yld Dvsfd Cmd Str No K-1 ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "QLD": {
+    "reutersCode": "QLD",
+    "name": "ProShares Ultra QQQ",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "QQQ": {
+    "reutersCode": "QQQ.O",
+    "name": "Invesco QQQ Trust  Series 1",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "QQQM": {
+    "reutersCode": "QQQM.O",
+    "name": "Invesco NASDAQ 100 ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "QUAL": {
+    "reutersCode": "QUAL.K",
+    "name": "iShares MSCI USA Quality Factor ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 3
+  },
+  "ROBO": {
+    "reutersCode": "ROBO.K",
+    "name": "ROBO Global Robotics and Automation Index ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 3
+  },
+  "RSP": {
+    "reutersCode": "RSP",
+    "name": "Invesco S&P 500 Equal Weight ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "SCHD": {
+    "reutersCode": "SCHD.K",
+    "name": "Schwab US Dividend Equity ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 3
+  },
+  "SCHG": {
+    "reutersCode": "SCHG.K",
+    "name": "Schwab US Large-Cap Growth ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 3
+  },
+  "SCHH": {
+    "reutersCode": "SCHH.K",
+    "name": "Schwab US REIT ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 3
+  },
+  "SGOV": {
+    "reutersCode": "SGOV.K",
+    "name": "iShares 0-3 Month Treasury Bond ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 3
+  },
+  "SHY": {
+    "reutersCode": "SHY.O",
+    "name": "iShares 1-3 Year Treasury Bond ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "SLV": {
+    "reutersCode": "SLV",
+    "name": "iShares Silver Trust",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "SMH": {
+    "reutersCode": "SMH.O",
+    "name": "VanEck Semiconductor ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "SOXL": {
+    "reutersCode": "SOXL.K",
+    "name": "Direxion Daily Semiconductor Bull 3X ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 3
+  },
+  "SOXS": {
+    "reutersCode": "SOXS.K",
+    "name": "Direxion Daily Semiconductor Bear 3X ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 3
+  },
+  "SOXX": {
+    "reutersCode": "SOXX.O",
+    "name": "iShares Semiconductor ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "SPHD": {
+    "reutersCode": "SPHD.K",
+    "name": "Invesco S&P 500 High Div Low Volatility ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 3
+  },
+  "SPLG": {
+    "reutersCode": null,
+    "checkedAt": "2026-08-13",
+    "note": "네이버 미지원"
+  },
+  "SPY": {
+    "reutersCode": "SPY",
+    "name": "State Street SPDR S&P 500 ETF Trust",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "SPYD": {
+    "reutersCode": "SPYD.K",
+    "name": "State Street SPDR Portfolio S&P 500 High Dvd ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 3
+  },
+  "SPYG": {
+    "reutersCode": "SPYG.K",
+    "name": "State Street SPDR Portfolio S&P 500 Growth ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 3
+  },
+  "SPYV": {
+    "reutersCode": "SPYV.K",
+    "name": "State Street SPDR Portfolio S&P 500 Value ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 3
+  },
+  "SQQQ": {
+    "reutersCode": "SQQQ.O",
+    "name": "ProShares UltraPro Short QQQ",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "SSO": {
+    "reutersCode": "SSO",
+    "name": "ProShares Ultra S&P500",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "TAN": {
+    "reutersCode": "TAN",
+    "name": "Invesco Solar ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "TECL": {
+    "reutersCode": "TECL.K",
+    "name": "Direxion Daily Technology Bull 3X ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 3
+  },
+  "TIP": {
+    "reutersCode": "TIP",
+    "name": "iShares TIPS Bond ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "TLT": {
+    "reutersCode": "TLT.O",
+    "name": "iShares 20+ Year Treasury Bond ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "TMF": {
+    "reutersCode": "TMF",
+    "name": "Direxion Daily 20 Year Treasury Bull 3X ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "TQQQ": {
+    "reutersCode": "TQQQ.O",
+    "name": "ProShares UltraPro QQQ",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "UPRO": {
+    "reutersCode": "UPRO.K",
+    "name": "ProShares UltraPro S&P500",
+    "checkedAt": "2026-08-13",
+    "attempts": 3
+  },
+  "USO": {
+    "reutersCode": "USO",
+    "name": "United States Oil Fund LP",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "VEA": {
+    "reutersCode": "VEA",
+    "name": "Vanguard Tax Managed Fund FTSE Developed Markets ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "VIG": {
+    "reutersCode": "VIG",
+    "name": "Vanguard Dividend Appreciation Index Fund",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "VIXY": {
+    "reutersCode": "VIXY.K",
+    "name": "ProShares VIX Short-Term Futures ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 3
+  },
+  "VNQ": {
+    "reutersCode": "VNQ",
+    "name": "Vanguard Real Estate Index Fund",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "VOO": {
+    "reutersCode": "VOO",
+    "name": "Vanguard 500 Index Fund",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "VT": {
+    "reutersCode": "VT",
+    "name": "Vanguard Total World Stock Index Fund",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "VTI": {
+    "reutersCode": "VTI",
+    "name": "Vanguard Morningstar Total Stock Mkt Ix Fd",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "VTV": {
+    "reutersCode": "VTV",
+    "name": "Vanguard Morningstar Value Index Fund",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "VUG": {
+    "reutersCode": "VUG",
+    "name": "Vanguard Morningstar Growth Index Fund",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "VWO": {
+    "reutersCode": "VWO",
+    "name": "Vanguard Emerging Markets Stock Index Fund",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "VYM": {
+    "reutersCode": "VYM",
+    "name": "Vanguard High Dividend Yield Index Fund",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "XLB": {
+    "reutersCode": "XLB",
+    "name": "State Street Materials Select Sector SPDR ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "XLC": {
+    "reutersCode": "XLC",
+    "name": "State Street Com Svc Sel Sec SPDR ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "XLE": {
+    "reutersCode": "XLE",
+    "name": "State Street Energy Select Sector SPDR ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "XLF": {
+    "reutersCode": "XLF",
+    "name": "State Street Financial Sel Sec SPDR ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "XLI": {
+    "reutersCode": "XLI",
+    "name": "State Street Industrial Select Sector SPDR ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "XLK": {
+    "reutersCode": "XLK",
+    "name": "State Street Technology Select Sector SPDR ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "XLP": {
+    "reutersCode": "XLP",
+    "name": "State Street Consumer Staples Sel Sect SPDR ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "XLRE": {
+    "reutersCode": "XLRE.K",
+    "name": "State Street Real Estate Select Sector SPDR ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 3
+  },
+  "XLU": {
+    "reutersCode": "XLU",
+    "name": "State Street Utilities Select Sector SPDR ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "XLV": {
+    "reutersCode": "XLV",
+    "name": "State Street Health Care Select Sector SPDR ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  },
+  "XLY": {
+    "reutersCode": "XLY",
+    "name": "State Street Consumer Disc Sel Sect SPDR ETF",
+    "checkedAt": "2026-08-13",
+    "attempts": 1
+  }
+}
