@@ -26,3 +26,16 @@ export function useLocationSearch(): string {
     () => ""
   );
 }
+
+/**
+ * @description 현재 경로를 SSR 안전하게 읽는다. 서버 컴포넌트가 알 수 없는 정보를
+ * 클라이언트에서 채울 때 쓴다 (not-found 페이지가 시도된 종목명을 보여주는 용도).
+ * @returns "/삼성전자-vs-애플" (서버에서는 "")
+ */
+export function useLocationPathname(): string {
+  return useSyncExternalStore(
+    subscribe,
+    () => window.location.pathname,
+    () => ""
+  );
+}

@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 
-import { useLocationSearch } from "@/hooks/useLocationSearch";
+import { useLocationSearch } from "@/hooks/useLocation";
 import { assignSlots } from "@/lib/chart/palette";
 import { compute } from "@/lib/market/compute";
 import { DEFAULT_AMOUNT, DEFAULT_PERIOD } from "@/lib/market/constants";

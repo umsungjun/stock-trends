@@ -4,6 +4,7 @@ import { notFound, permanentRedirect } from "next/navigation";
 import CompareView from "@/components/compare/CompareView";
 import DataFootnote from "@/components/compare/DataFootnote";
 import HeadlineSummary from "@/components/compare/HeadlineSummary";
+import PopularComparisons from "@/components/compare/PopularComparisons";
 import PageContainer from "@/components/layout/PageContainer";
 import { pct, won, ymd } from "@/lib/format";
 import { compute } from "@/lib/market/compute";
@@ -15,6 +16,7 @@ import {
   getSlugResolver,
   getTickerMap,
 } from "@/lib/market/registry.server";
+import { getRelatedComparisons } from "@/lib/market/related.server";
 import { parseSlug } from "@/lib/market/slug";
 import { SITE_URL } from "@/lib/site";
 
@@ -116,6 +118,7 @@ export default async function ComparePage({
   }
 
   const names = Object.fromEntries(tickers.map((t) => [t.code, t.name]));
+  const related = await getRelatedComparisons(parsed.codes);
 
   return (
     <PageContainer>
@@ -145,6 +148,8 @@ export default async function ComparePage({
           host={new URL(SITE_URL).host}
         />
       </div>
+
+      <PopularComparisons items={related} />
 
       <DataFootnote meta={meta} />
     </PageContainer>

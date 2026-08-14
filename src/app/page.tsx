@@ -1,6 +1,7 @@
 import CompareView from "@/components/compare/CompareView";
 import DataFootnote from "@/components/compare/DataFootnote";
 import HeadlineSummary from "@/components/compare/HeadlineSummary";
+import PopularComparisons from "@/components/compare/PopularComparisons";
 import PageContainer from "@/components/layout/PageContainer";
 import { compute } from "@/lib/market/compute";
 import {
@@ -13,6 +14,7 @@ import {
   getSeriesMany,
   getTickerMap,
 } from "@/lib/market/registry.server";
+import { getRelatedComparisons } from "@/lib/market/related.server";
 import { HOME_HEADING, HOME_SUBHEADING, SITE_URL } from "@/lib/site";
 
 export const dynamic = "force-static";
@@ -34,6 +36,8 @@ export default async function HomePage() {
     meta.weeks.length,
     meta.fx
   );
+
+  const related = await getRelatedComparisons(DEFAULT_CODES);
 
   return (
     <PageContainer>
@@ -59,6 +63,8 @@ export default async function HomePage() {
           host={new URL(SITE_URL).host}
         />
       </div>
+
+      <PopularComparisons items={related} />
 
       <DataFootnote meta={meta} />
     </PageContainer>
