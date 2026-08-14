@@ -8,7 +8,7 @@ npm trends 형식의 주식 비교 도구. 서비스명 **Stock Trends**(화면 
 
 ```bash
 pnpm dev / build / lint          # Next.js
-pnpm test                        # vitest + node --test (94건)
+pnpm test                        # vitest + node --test (96건)
 
 pnpm data:all                    # 환율 → 시세 → 슬러그 → 검증
 pnpm data:fx                     # 환율만 (증분)

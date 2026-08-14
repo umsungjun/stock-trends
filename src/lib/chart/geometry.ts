@@ -144,7 +144,12 @@ export const buildLinePath = (values: number[], scales: Scales): string =>
     )
     .join(" ");
 
-const LABEL_MIN_GAP = 15;
+/**
+ * 라벨 한 덩어리가 차지하는 세로 폭. ChartBody가 종목명(labelY - 2, 11.5px)과 평가액(labelY + 11, 12px)을
+ * 두 줄로 그리므로 글리프 상단부터 아래 줄 베이스라인까지 약 24px이다. 이보다 좁으면 위 라벨의 평가액과
+ * 아래 라벨의 종목명이 겹친다 — 값 차이가 큰 조합(엔비디아 vs 삼성전자)에서 하위 계열이 바닥에 몰릴 때 드러난다.
+ */
+const LABEL_MIN_GAP = 26;
 
 /**
  * @description 끝점 직접 라벨의 위치를 정하고 겹침을 해소한다.
@@ -182,6 +187,17 @@ export const placeEndLabels = (
       final: r.final,
     });
   }
+
+  // 아래로만 밀면 하위 계열이 바닥에 몰렸을 때 스택이 플롯 밖으로 나간다. 넘치면 바닥에서 거꾸로 밀어 올린다
+  const last = labels[labels.length - 1];
+  if (last && last.labelY > layout.y1) {
+    let ceiling = layout.y1;
+    for (let i = labels.length - 1; i >= 0; i--) {
+      labels[i].labelY = Math.min(labels[i].labelY, ceiling);
+      ceiling = labels[i].labelY - LABEL_MIN_GAP;
+    }
+  }
+
   return labels;
 };
 

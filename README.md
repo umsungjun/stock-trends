@@ -59,7 +59,7 @@ pnpm install
 cp .env.local.example .env.local   # 비교 페이지는 값 없이도 동작합니다
 
 pnpm dev
-pnpm test        # 94건
+pnpm test        # 96건
 pnpm build
 
 pnpm data:all    # 환율 → 시세 → 슬러그 → 검증

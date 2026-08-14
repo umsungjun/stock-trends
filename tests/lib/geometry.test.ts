@@ -1,7 +1,3 @@
-import type { ComputedRow } from "@/lib/market/compute";
-
-import { describe, expect, it } from "vitest";
-
 import {
   buildLinePath,
   buildScales,
@@ -11,6 +7,9 @@ import {
   indexFromPointer,
   placeEndLabels,
 } from "@/lib/chart/geometry";
+import type { ComputedRow } from "@/lib/market/compute";
+
+import { describe, expect, it } from "vitest";
 
 const row = (code: string, values: number[]): ComputedRow => ({
   code,
@@ -116,7 +115,43 @@ describe("placeEndLabels — 겹침 해소", () => {
 
     const ys = labels.map((l) => l.labelY).sort((a, b) => a - b);
     for (let i = 1; i < ys.length; i++) {
-      expect(ys[i] - ys[i - 1]).toBeGreaterThanOrEqual(15 - 1e-6);
+      // 라벨은 종목명·평가액 2줄이라 약 24px을 차지한다. 이보다 좁으면 위 라벨의 평가액과 아래 라벨의 종목명이 겹친다
+      expect(ys[i] - ys[i - 1]).toBeGreaterThanOrEqual(24);
+    }
+  });
+
+  it("값 차이가 큰 조합에서 하위 계열이 바닥에 몰려도 겹치지 않는다", () => {
+    // 엔비디아 195억 vs 애플 14.8억 vs 삼성전자 7.4억 — 하위 둘의 anchorY가 거의 같아진다
+    const rows = [
+      row("NVDA", [100, 19_500]),
+      row("AAPL", [100, 1_477]),
+      row("005930", [100, 739]),
+    ];
+    const scales = buildScales(rows, layout, 100);
+    const labels = placeEndLabels(
+      rows,
+      scales,
+      { NVDA: 0, AAPL: 1, "005930": 2 },
+      layout
+    );
+
+    const ys = labels.map((l) => l.labelY).sort((a, b) => a - b);
+    for (let i = 1; i < ys.length; i++) {
+      expect(ys[i] - ys[i - 1]).toBeGreaterThanOrEqual(24);
+    }
+  });
+
+  it("밀어낸 라벨이 플롯 영역을 벗어나지 않는다", () => {
+    // 다섯 계열이 모두 바닥에 몰리면 아래로만 밀 경우 스택이 축 밖으로 나간다
+    const rows = ["A", "B", "C", "D", "E"].map((c, i) =>
+      row(c, [100, 10_000, 100 + i * 0.05])
+    );
+    const scales = buildScales(rows, layout, 100);
+    const slots = Object.fromEntries(rows.map((r, i) => [r.code, i]));
+    const labels = placeEndLabels(rows, scales, slots, layout);
+
+    for (const l of labels) {
+      expect(l.labelY).toBeLessThanOrEqual(layout.y1);
     }
   });
 
