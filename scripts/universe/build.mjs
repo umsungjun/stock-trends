@@ -24,6 +24,7 @@ import { US_ETF_SEED } from "./seed-us-etf.mjs";
 
 const OUT = new URL("../../data/universe.json", import.meta.url);
 const ALIAS_FILE = new URL("../../data/us-etf-aliases.json", import.meta.url);
+const EXTRA_FILE = new URL("../../data/universe-extra.json", import.meta.url);
 
 const TARGETS = { krStock: 1200, krEtf: 300, usStock: 550, usEtf: 100 };
 /** 매칭 풀 — S&P 500 하위 종목까지 닿으려면 시총 순위를 넉넉히 받아야 한다 */
@@ -138,6 +139,19 @@ const main = async () => {
 
   const [kr, us] = await Promise.all([buildKr(), buildUs(aliasMap)]);
   const fresh = [...kr, ...us.entries];
+
+  // 요청으로 추가한 종목을 병합한다. 슬러그 확정 전에 넣어야 충돌 해소가 전역으로 유지된다.
+  // 순위로 이미 들어온 종목은 건너뛴다 — 자동 선정 결과가 우선이다
+  const extra = (await readJsonIfExists(EXTRA_FILE, { tickers: [] }))?.tickers ?? [];
+  const present = new Set(fresh.map((e) => e.code));
+  let merged = 0;
+  for (const e of extra) {
+    if (present.has(e.code)) continue;
+    fresh.push({ ...e, src: e.src ?? e.code, rank: 10_000 + merged });
+    present.add(e.code);
+    merged++;
+  }
+  if (merged) console.log(`요청 추가 종목 ${merged}개 병합 (data/universe-extra.json)\n`);
 
   // 슬러그·별칭은 전체 집합 기준으로 한 번에 확정한다 (충돌 해소가 전역이어야 하므로)
   const slugByCode = assignSlugs(fresh);

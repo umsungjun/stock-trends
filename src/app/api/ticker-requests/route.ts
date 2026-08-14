@@ -134,6 +134,18 @@ export async function POST(request: NextRequest) {
     .maybeSingle();
 
   if (existing) {
+    // 처리가 끝난 건에는 투표를 받지 않는다 — 대기 목록의 우선순위를 흐리기만 한다
+    if (existing.status !== "queued") {
+      return NextResponse.json({
+        status: existing.status,
+        votes: existing.votes,
+        message:
+          existing.status === "added"
+            ? "이미 추가된 종목이에요. 검색해 보세요."
+            : "확인해 봤지만 시세를 받을 수 없는 종목이에요.",
+      });
+    }
+
     const { error: voteError } = await supabase
       .from("ticker_request_votes")
       .insert({ request_id: existing.id, ip_hash: ipHash });
@@ -151,10 +163,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       status: existing.status,
       votes,
-      message:
-        existing.status === "added"
-          ? "이미 추가된 종목이에요. 검색해 보세요."
-          : `이미 ${votes}명이 요청했어요. 우선순위에 반영됩니다.`,
+      message: `이미 ${votes}명이 요청했어요. 우선순위에 반영됩니다.`,
     });
   }
 
