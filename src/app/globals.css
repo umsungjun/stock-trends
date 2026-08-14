@@ -137,7 +137,23 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
-:focus-visible {
+/*
+ * 포커스 링은 레이어 밖에 둔다 — 언레이어드 CSS가 @layer utilities를 이기므로 컴포넌트가
+ * outline-none으로 실수로 지울 수 없다. shadcn 프리셋(button·toggle)이 outline-none을 달고 오는데
+ * 자체 focus-visible:ring은 --color-ring이 비어 있어 렌더되지 않는다. 레이어 안에 두면
+ * 기간·투자금 토글의 포커스 지표가 통째로 사라져 키보드 사용자가 위치를 잃는다.
+ *
+ * 자체 포커스 표현이 있는 요소만 data-focus-ring="none"으로 명시해 뺀다.
+ */
+:focus-visible:not([data-focus-ring="none"]) {
   outline: 2px solid var(--focus);
   outline-offset: 2px;
+}
+
+@layer base {
+  /* Tailwind v4 Preflight가 버튼 커서를 default로 되돌린다 — 클릭 가능한 요소는 손가락 커서를 유지한다 */
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
 }

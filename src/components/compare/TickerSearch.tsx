@@ -79,7 +79,9 @@ export default function TickerSearch({
           spellCheck={false}
           placeholder="종목명 · 코드 · 초성으로 검색 (예: ㅅㅅㅈㅈ, AAPL)"
           aria-label="종목 검색"
-          className="text-ink placeholder:text-ink-muted h-10 w-full bg-transparent text-[14px] outline-none"
+          // 감싼 div가 focus-within으로 테두리를 바꾼다 — outline-none은 브라우저 기본 링, data-focus-ring은 전역 링을 뺀다
+          data-focus-ring="none"
+          className="text-ink placeholder:text-ink-muted h-10 min-w-0 flex-1 bg-transparent text-[14px] outline-none"
           onFocus={() => {
             ensureLoaded();
             setOpen(true);
