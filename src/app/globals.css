@@ -1,0 +1,143 @@
+@import "tailwindcss";
+
+/**
+ * Tailwind v4의 dark: 는 기본이 prefers-color-scheme이다.
+ * 이 선언이 없으면 next-themes가 붙이는 .dark 클래스가 무시되고,
+ * 증상은 "테마 토글이 안 먹는다"로 나타나 원인 찾기가 어렵다.
+ */
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * 색은 프로토타입(index.html)에서 그대로 이식했다.
+ * 색맹 시뮬레이션으로 라이트·다크 양쪽을 검증한 값이라 임의로 바꾸지 않는다.
+ * 라이트 모드에서 계열색 일부가 대비 3:1 아래라 끝점 직접 라벨과 비교표가 필수 보완이다.
+ */
+:root {
+  color-scheme: light;
+
+  --plane: #f4f5f7;
+  --surface: #fbfbfc;
+  --ink: #0b0c0e;
+  --ink-2: #4e5158;
+  --ink-muted: #868a92;
+  --grid: #e4e6ea;
+  --axis: #c7cad0;
+  --hairline: rgba(11, 12, 14, 0.11);
+  --field: #ffffff;
+  --chip: #eceef1;
+  --chip-hover: #e2e5ea;
+  --good: #0ca30c;
+  --critical: #d03b3b;
+  --focus: #2a78d6;
+
+  /* 비교 계열색 — 종목 조합이 같으면 항상 같은 색이 배정된다 */
+  --chart-1: #2a78d6;
+  --chart-2: #eb6834;
+  --chart-3: #1baf7a;
+  --chart-4: #eda100;
+  --chart-5: #e87ba4;
+}
+
+.dark {
+  color-scheme: dark;
+
+  --plane: #0c0d0f;
+  --surface: #17181a;
+  --ink: #ffffff;
+  --ink-2: #c0c3c9;
+  --ink-muted: #8a8e96;
+  --grid: #26282c;
+  --axis: #3a3d42;
+  --hairline: rgba(255, 255, 255, 0.12);
+  --field: #1f2124;
+  --chip: #24262a;
+  --chip-hover: #2d3034;
+  --good: #0ca30c;
+  --critical: #d03b3b;
+  --focus: #3987e5;
+
+  --chart-1: #3987e5;
+  --chart-2: #d95926;
+  --chart-3: #199e70;
+  --chart-4: #c98500;
+  --chart-5: #d55181;
+}
+
+@theme inline {
+  --color-plane: var(--plane);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-muted: var(--ink-muted);
+  --color-grid: var(--grid);
+  --color-axis: var(--axis);
+  --color-hairline: var(--hairline);
+  --color-field: var(--field);
+  --color-chip: var(--chip);
+  --color-chip-hover: var(--chip-hover);
+  --color-good: var(--good);
+  --color-critical: var(--critical);
+  --color-focus: var(--focus);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  --font-sans:
+    "Pretendard Variable", Pretendard, system-ui, -apple-system, "Segoe UI",
+    "Apple SD Gothic Neo", sans-serif;
+  --font-mono:
+    ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+
+  /*
+   * shadcn 호환 별칭 — shadcn 컴포넌트는 bg-background·text-foreground·border-input 같은
+   * 고정된 토큰 이름을 쓴다. 우리 토큰에 매핑해두면 CLI가 생성한 파일을 손대지 않고도
+   * 프로젝트의 시각 언어를 따르게 된다.
+   */
+  --color-background: var(--plane);
+  --color-foreground: var(--ink);
+  --color-card: var(--surface);
+  --color-card-foreground: var(--ink);
+  --color-popover: var(--field);
+  --color-popover-foreground: var(--ink);
+  --color-primary: var(--focus);
+  --color-primary-foreground: #ffffff;
+  --color-secondary: var(--chip);
+  --color-secondary-foreground: var(--ink);
+  --color-muted: var(--chip);
+  --color-muted-foreground: var(--ink-muted);
+  --color-accent: var(--chip-hover);
+  --color-accent-foreground: var(--ink);
+  --color-destructive: var(--critical);
+  --color-destructive-foreground: #ffffff;
+  --color-border: var(--hairline);
+  --color-input: var(--hairline);
+  --color-ring: var(--focus);
+
+  /* 프로토타입은 각진 hairline 톤이다 — 정보 밀도 높은 금융 도구의 시각 언어를 유지한다 */
+  --radius: 2px;
+  --radius-sm: 2px;
+  --radius-md: 2px;
+  --radius-lg: 3px;
+  --radius-xl: 4px;
+}
+
+body {
+  background: var(--plane);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 숫자는 자릿수가 흔들리면 읽기 어렵다 — 표·차트 라벨 전용 유틸 */
+.tnum {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
