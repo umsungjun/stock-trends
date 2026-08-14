@@ -141,7 +141,6 @@ export default async function Image({
 
       {chart && (
         <div style={{ display: "flex", marginTop: "auto" }}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={chart} width={1000} height={200} alt="" />
         </div>
       )}
