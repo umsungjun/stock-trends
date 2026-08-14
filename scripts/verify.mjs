@@ -9,7 +9,8 @@
  * 환경변수 ALLOW_HISTORY_REWRITE=1 이면 과거 구간 대량 변경 검사를 건너뛴다 (액면분할 등 정당한 경우).
  */
 
-import { readdir } from "node:fs/promises";
+import { execFileSync } from "node:child_process";
+import { readFile, readdir } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 
 import { readJsonIfExists } from "./lib/io.mjs";
@@ -99,7 +100,75 @@ const check = async () => {
     fail(`정규화에 불변이 아닌 슬러그 ${unstable.length}개: ${unstable.slice(0, 3).map((t) => `${t.s}→${toSlug(t.s)}`).join(", ")}`);
   }
 
+  await checkHistoryRewrite(tickers.length);
+
   return { meta, tickers, fileCount };
+};
+
+/** 주간 갱신에서 정상적인 변경은 배열 끝에 값이 하나 붙는 것뿐이다 */
+const TAIL_TOLERANCE = 3;
+/** 이 비율을 넘는 종목의 과거 구간이 동시에 바뀌면 소스 버그로 본다 */
+const REWRITE_RATIO = 0.02;
+
+/**
+ * @description 과거 구간이 대량으로 다시 쓰였는지 검사한다.
+ *
+ * 액면분할은 종목 단위로 일어나므로 몇 개는 정상이다. 하지만 수백 개가 한꺼번에 바뀌면
+ * 소스의 조정 기준이 통째로 달라진 것이고, 그대로 커밋하면 전 구간 수익률이 조용히 틀어진다.
+ * 정당한 경우에는 ALLOW_HISTORY_REWRITE=1로 통과시킨다.
+ * @param total - 전체 종목 수
+ */
+const checkHistoryRewrite = async (total) => {
+  if (process.env.ALLOW_HISTORY_REWRITE) return;
+
+  let changed;
+  try {
+    changed = execFileSync(
+      "git",
+      ["diff", "--name-only", "HEAD", "--", "public/data/kr", "public/data/us"],
+      { encoding: "utf8" }
+    )
+      .split("\n")
+      .filter((f) => f.endsWith(".json"));
+  } catch {
+    return; // git이 없거나 첫 커밋 — 비교할 이전 버전이 없다
+  }
+  if (!changed.length) return;
+
+  let rewritten = 0;
+  const samples = [];
+
+  for (const file of changed) {
+    let prev;
+    try {
+      prev = JSON.parse(
+        execFileSync("git", ["show", `HEAD:${file}`], { encoding: "utf8" })
+      );
+    } catch {
+      continue; // 새로 추가된 종목
+    }
+    const curr = JSON.parse(await readFile(file, "utf8"));
+
+    const head = Math.max(0, prev.v.length - TAIL_TOLERANCE);
+    const movedStart = prev.o !== curr.o;
+    const pastChanged = prev.v.slice(0, head).some((v, i) => v !== curr.v[i]);
+
+    if (movedStart || pastChanged) {
+      rewritten++;
+      if (samples.length < 5) samples.push(file.split("/").pop());
+    }
+  }
+
+  const ratio = total ? rewritten / total : 0;
+  if (ratio > REWRITE_RATIO) {
+    fail(
+      `과거 구간이 다시 쓰인 종목 ${rewritten}개 (${(ratio * 100).toFixed(1)}%) — ` +
+        `소스 기준이 바뀌었을 수 있습니다: ${samples.join(", ")}. ` +
+        `정당한 변경이면 ALLOW_HISTORY_REWRITE=1로 재실행하세요`
+    );
+  } else if (rewritten) {
+    console.log(`  과거 구간 변경 ${rewritten}개 (액면분할 등, 허용 범위)`);
+  }
 };
 
 const main = async () => {

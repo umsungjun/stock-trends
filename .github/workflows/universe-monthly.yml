@@ -1,0 +1,71 @@
+name: 월간 유니버스 갱신
+
+# 시세 수집과 주기를 분리한다. 시총 순위는 매주 바뀌는데 유니버스가 따라 흔들리면
+# 경계 종목이 매주 들락날락하고 **이미 공유된 URL이 깨진다.**
+# 그래서 자동 커밋하지 않고 PR을 열어 사람이 확인한다.
+on:
+  schedule:
+    - cron: "0 5 1 * *" # 매월 1일 05:00 UTC = 14:00 KST
+  workflow_dispatch:
+
+concurrency:
+  group: universe
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: 유니버스 재생성
+        id: build
+        run: |
+          node scripts/universe/build.mjs | tee /tmp/universe.log
+          {
+            echo 'summary<<EOF'
+            cat /tmp/universe.log
+            echo EOF
+          } >> "$GITHUB_OUTPUT"
+
+      - name: 변경 확인
+        id: diff
+        run: |
+          if git diff --quiet data/universe.json; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: PR 생성
+        if: steps.diff.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: chore/universe-${{ github.run_number }}
+          base: main
+          labels: universe
+          commit-message: "chore: 유니버스 갱신"
+          title: "chore: 유니버스 갱신"
+          body: |
+            시총 순위 변동을 반영한 유니버스 재생성 결과입니다.
+
+            ```
+            ${{ steps.build.outputs.summary }}
+            ```
+
+            ### 병합 전 확인
+            - 비활성 처리된 종목이 예상 범위인지 (경계 종목은 매달 몇 개씩 오간다)
+            - 슬러그가 새로 충돌하지 않았는지 — `verify.mjs`가 정규화 불변성까지 검사한다
+            - **한 번 발행한 종목은 삭제되지 않는다.** `active:false`로만 표시되어 직링크는 살아 있다
+
+            병합하면 다음 주간 워크플로가 새 유니버스로 시세를 수집합니다.

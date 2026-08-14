@@ -1,0 +1,109 @@
+name: 주간 시세 갱신
+
+# 금 15:30 KST 한국장 마감 → 토 05:00 KST 미국장 마감 → 토 09:31 KST 네이버 해외 종가 확정
+# 토 13:00 KST에 돌면 3.5시간 여유가 있다.
+on:
+  schedule:
+    - cron: "0 4 * * 6" # 토 04:00 UTC = 토 13:00 KST
+    - cron: "0 4 * * 0" # 일 재시도. 멱등이라 이미 성공했으면 "변경 없음"으로 끝난다
+  workflow_dispatch:
+    inputs:
+      allow_history_rewrite:
+        description: "과거 구간 대량 변경 허용 (액면분할 등 정당한 경우)"
+        type: boolean
+        default: false
+
+# 데이터 작업은 중간에 끊지 않는다
+concurrency:
+  group: data-pipeline
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: 환율 증분 수집
+        env:
+          # 없으면 네이버로 자동 폴백한다 (2004년부터 수집 가능)
+          ECOS_API_KEY: ${{ secrets.ECOS_API_KEY }}
+        run: node scripts/fetch-fx.mjs
+
+      - name: 시세 수집
+        run: node scripts/fetch.mjs
+
+      - name: 사전 생성 슬러그 갱신
+        run: node scripts/build-popular.mjs
+
+      - name: 산출물 검증
+        env:
+          ALLOW_HISTORY_REWRITE: ${{ inputs.allow_history_rewrite && '1' || '' }}
+        # 성공률 95% 미만이거나 그리드·환율·슬러그에 문제가 있으면 여기서 멈춘다.
+        # 반쪽 데이터를 발행하지 않는 것이 목적이다
+        run: node scripts/verify.mjs
+
+      - name: 변경 없으면 스킵하고 커밋
+        id: commit
+        run: |
+          git config user.name  "stock-trends-bot"
+          git config user.email "stock-trends-bot@users.noreply.github.com"
+          git add -A public/data data/cache
+
+          if git diff --staged --quiet; then
+            echo "변경 없음 — 커밋 스킵"
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          WEEK=$(node -p "require('./public/data/meta.json').asOfWeek")
+          N=$(node -p "require('./public/data/tickers.json').tickers.length")
+          FILES=$(git diff --staged --name-only | wc -l | tr -d ' ')
+          git commit -m "data: ${WEEK} 갱신 (${N}종목, ${FILES}파일)"
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: 푸시 (경합 시 rebase 재시도)
+        if: steps.commit.outputs.changed == 'true'
+        run: |
+          for i in 1 2 3; do
+            git push && exit 0
+            git pull --rebase --autostash origin main || true
+          done
+          exit 1
+
+      - name: Supabase 슬립 방지 핑
+        if: always() && vars.SITE_URL != ''
+        # 무료 티어는 7일 무활동 시 일시정지된다. 주 1회 호출로 막는다
+        run: curl -sf --max-time 20 "${{ vars.SITE_URL }}/api/board?limit=1" > /dev/null || true
+
+      - name: 실패 시 이슈 생성 또는 코멘트
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          EXISTING=$(gh issue list --label data-pipeline --state open --json number -q '.[0].number' || true)
+          if [ -n "$EXISTING" ]; then
+            gh issue comment "$EXISTING" --body "재실패: $RUN_URL"
+          else
+            gh issue create --label data-pipeline \
+              --title "주간 시세 갱신 실패 $(date -u +%Y-%m-%d)" \
+              --body "워크플로가 실패했습니다.
+
+          $RUN_URL
+
+          확인할 것
+          - 네이버 API 응답 형식이 바뀌었는지
+          - verify.mjs가 어떤 항목에서 걸렸는지 (성공률·그리드·환율·슬러그)
+          - 과거 구간이 대량으로 바뀌었다면 액면분할인지 소스 버그인지"
+          fi

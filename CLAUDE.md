@@ -7,11 +7,14 @@ npm trends 형식의 주식 비교 도구. 서비스명 **Stock Trends**(화면 
 ## 명령어
 
 ```bash
-node scripts/fetch-fx.mjs        # 환율 증분 수집 → data/cache/fx-daily.ndjson
-node scripts/fetch.mjs           # 시세 수집 → public/data/**
-node scripts/verify.mjs          # 산출물 검증 (커밋 전 필수)
-pnpm test                        # vitest + node --test
-node --test tests/scripts/*.test.mjs
+pnpm dev / build / lint          # Next.js
+pnpm test                        # vitest + node --test (94건)
+
+pnpm data:all                    # 환율 → 시세 → 슬러그 → 검증
+pnpm data:fx                     # 환율만 (증분)
+pnpm data:fetch                  # 시세만
+pnpm data:popular                # 사전 생성 슬러그 목록
+pnpm data:verify                 # 산출물 검증 (커밋 전 필수)
 
 node scripts/universe/build.mjs      # 유니버스 재생성 (월 1회, PR로만)
 node scripts/seed-etf-aliases.mjs    # 미국 ETF 한글명 시드 (1회성)
@@ -88,9 +91,55 @@ verify.mjs          →  통과해야 커밋
 - 배당 미반영을 화면에서 숨기지 않는다. 금융 정보라 출처·기준일·한계를 명시하는 것이 신뢰이자 SEO 자산이다
 - 토스증권 API는 **1회성 시드 생성에만** 쓴다. 공개 문서가 없는 내부 API라 런타임 의존으로 두면 안 된다
 
+## 앱 구조
+
+```
+src/
+├── app/          / · /[slug] · /board · /privacy · sitemap · robots · opengraph-image · api/
+├── components/   ui(shadcn) · layout · common · compare · board
+├── lib/
+│   ├── market/   compute · slug · search · constants · registry.server · series.client
+│   ├── chart/    geometry(순수) · palette · og-svg
+│   ├── board/    nickname · identity · moderation
+│   └── supabase/ server (service_role 전용)
+├── hooks/        useElementWidth · useLocation · useMounted
+└── types/
+tests/            lib · integration · scripts
+supabase/migrations/
+```
+
+### 앱에서 반복해서 발목을 잡은 것들
+
+- **`searchParams`를 서버에서 읽으면 정적 생성이 통째로 깨진다.** 쿼리는 `useLocation`(useSyncExternalStore)으로 클라이언트에서만 읽는다
+- **마운트 판정에 값(`theme !== undefined`)을 쓰면 안 된다.** next-themes는 클라이언트 첫 렌더에 이미 저장된 테마를 갖고 있어 서버와 갈리고, 그 차이가 트리 전체의 hydration mismatch가 된다 → `useMounted`
+- **Next 16에서 sitemap의 `id`는 Promise다.** await하지 않으면 빈 사이트맵이 조용히 생성된다
+- **루트 `not-found.tsx`에 `export const metadata`를 두면 렌더가 조용히 실패한다.** 에러도 로그도 없다
+- **satori는 CSS 변수를 못 읽고, 자식이 둘 이상인 div에 명시적 `display`를 요구한다.** 그래서 `compute`가 색을 모르고 `palette`가 cssVar/hex를 따로 준다
+- **`outputFileTracingIncludes`에 없는 라우트에서 `fs`로 public/data를 읽으면 배포 후 온디맨드 생성에서만 500이 난다**
+- React 19는 렌더 중 `Date.now()`·`Math.random()`과 effect 안의 `setState`를 막는다
+
+## 게시판
+
+로그인 없음. 모든 접근이 서버 라우트(`service_role`)를 통하고 RLS는 정책을 만들지 않아 anon으로는 아무것도 못 한다.
+
+- **소유권은 서버가 발급한 토큰으로만 판정한다.** IP로 판정하면 국내 캐리어 NAT에서 남의 글을 지울 수 있고 LTE↔WiFi 전환만으로 자기 글을 못 지운다. `ip_hash`는 레이트리밋 전용
+- **닉네임은 seed로 서버가 다시 만든다.** 클라이언트 문자열을 저장하지 않아 사칭·욕설이 구조적으로 불가능하다
+- **섀도밴은 성공 응답을 준다.** 차단당한 걸 알면 IP를 바꿔 다시 온다
+- 금칙어는 코드가 아니라 `blocked_terms` 테이블에 둔다 — 스팸 문구가 주 단위로 바뀐다
+- ⚠️ Supabase에서 "Automatically expose new tables"를 끄면 **`service_role`에도 권한이 가지 않는다.** 마이그레이션의 명시적 `grant`를 지우지 말 것
+
+## 자동화
+
+```
+.github/workflows/data-weekly.yml       토 13:00 KST + 일 재시도(멱등)
+.github/workflows/universe-monthly.yml  매월 1일, PR로만
+```
+
+`verify.mjs`가 게이트다 — 성공률 95% 미만, 그리드 결손, 환율 구멍, 슬러그 충돌, **과거 구간 대량 재작성**(2% 초과) 중 하나라도 걸리면 커밋하지 않는다. 액면분할처럼 정당한 경우는 `ALLOW_HISTORY_REWRITE=1`.
+
 ## 상태
 
-Phase 1(데이터 파이프라인) 완료. 다음은 Next.js 프로젝트 골격 → 순수 모듈(compute·slug·geometry) → 비교 페이지 → 게시판 순.
+Phase 1~6 완료 (파이프라인 · 골격 · 순수모듈 · 비교페이지 · 게시판 · 자동화). 남은 것은 Vercel 배포와 검색엔진 등록.
 계획 전문은 `~/.claude/plans/kind-jumping-tiger.md`.
 
 <!-- BEGIN:nextjs-agent-rules -->

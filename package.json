@@ -14,7 +14,8 @@
     "data:fx": "node scripts/fetch-fx.mjs",
     "data:fetch": "node scripts/fetch.mjs",
     "data:verify": "node scripts/verify.mjs",
-    "data:all": "pnpm data:fx && pnpm data:fetch && pnpm data:verify"
+    "data:all": "pnpm data:fx && pnpm data:fetch && pnpm data:popular && pnpm data:verify",
+    "data:popular": "node scripts/build-popular.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.112.3",
