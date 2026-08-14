@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+const EMAIL = "umseonjgun@naver.com";
+
 /**
  * @description 전역 푸터 — 데이터 출처와 한계를 명시한다.
  *
@@ -27,7 +29,19 @@ export default function Footer() {
           과거 수익률은 미래를 보장하지 않습니다.
         </p>
 
-        <div className="mt-5 flex items-center gap-3 border-t border-hairline pt-4">
+        {/* 권리자 문의 창구 — 연락 수단이 없으면 중단 요청 대신 곧장 법적 절차로 갈 수 있다 */}
+        <p className="mt-2">
+          데이터 출처에 관한 문의나 이용 중단 요청은{" "}
+          <a
+            href={`mailto:${EMAIL}`}
+            className="font-semibold text-ink-2 underline underline-offset-2"
+          >
+            {EMAIL}
+          </a>
+          로 알려주시면 신속히 조치하겠습니다.
+        </p>
+
+        <div className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-2 border-t border-hairline pt-4">
           <span>© {new Date().getFullYear()} Stock Trends</span>
           <Link href="/privacy" className="hover:text-ink-2">
             개인정보처리방침
@@ -35,6 +49,25 @@ export default function Footer() {
           <Link href="/board" className="hover:text-ink-2">
             건의사항
           </Link>
+          <a
+            href="https://github.com/umsungjun"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-ink-2"
+          >
+            GitHub
+          </a>
+          <a
+            href="https://www.linkedin.com/in/frontend-developer-umsungjun/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-ink-2"
+          >
+            LinkedIn
+          </a>
+          <a href={`mailto:${EMAIL}`} className="hover:text-ink-2">
+            문의
+          </a>
         </div>
       </div>
     </footer>
