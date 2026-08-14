@@ -1,6 +1,8 @@
 # stock-trends
 
-npm trends 형식의 주식 비교 도구. 서비스명 **Stock Trends**(화면 서술어는 "주식 비교"), 저장소·도메인 슬러그는 `stock-trends`.
+npm trends 형식의 주식 비교 도구. 서비스명 **Stock Trends**(화면 서술어는 "주식 비교"), 저장소 슬러그는 `stock-trends`.
+
+⚠️ 배포 주소는 `stock-trends-kr.vercel.app`이다 — 저장소 이름과 다르다. `stock-trends`·`stock-trend` 모두 다른 사람이 선점해 `-kr`을 붙였다. 코드에서는 `lib/site.ts`의 `FALLBACK_ORIGIN` 한 곳에만 박혀 있고 운영에서는 `NEXT_PUBLIC_SITE_URL`이 덮는다.
 
 한국·미국 종목/ETF를 최대 5개까지 한 차트에 겹쳐 "그때 넣었으면 지금 얼마"를 보여준다.
 
@@ -18,7 +20,7 @@ pnpm data:verify                 # 산출물 검증 (커밋 전 필수)
 
 pnpm requests                    # 대기 중인 종목 추가 요청 (득표순)
 
-node scripts/universe/build.mjs      # 유니버스 재생성 (월 1회, PR로만)
+pnpm data:universe                   # 유니버스 재생성 (월 1회, PR로만)
 node scripts/seed-etf-aliases.mjs    # 미국 ETF 한글명 시드 (1회성)
 node scripts/build-brand-assets.mjs  # OG 카드·파비콘 PNG 재생성 (로고 변경 시)
 ```
@@ -36,7 +38,7 @@ node scripts/build-brand-assets.mjs  # OG 카드·파비콘 PNG 재생성 (로�
 
 거래일 합집합 그리드는 쓸 수 없다. 한국 금요일과 미국 일요일은 구조적으로 절대 같은 날이 아니라 매주 두 칸이 생기고 모든 계열이 계단형이 된다.
 
-**완결된 주차만 발행한다.** 진행 중인 주차를 포함하면 값이 매일 바뀌어 매 실행마다 2,146개 파일이 diff에 뜨고 "변경 없으면 커밋 스킵"이 무력화된다. 기준은 그 주 토요일 12:00 KST — 한국장 금 15:30 마감, 미국장 금 16:00 ET(토 05:00 KST), 네이버 해외 종가 확정 토 09:31 KST.
+**완결된 주차만 발행한다.** 진행 중인 주차를 포함하면 값이 매일 바뀌어 매 실행마다 2,153개 파일이 diff에 뜨고 "변경 없으면 커밋 스킵"이 무력화된다. 기준은 그 주 토요일 12:00 KST — 한국장 금 15:30 마감, 미국장 금 16:00 ET(토 05:00 KST), 네이버 해외 종가 확정 토 09:31 KST.
 
 **환율은 시점별로 적용한다.** 각 주차의 달러 가격에 그 주차 환율을 곱한다. 오늘 환율을 전 구간에 곱하면 곡선이 달러 차트와 똑같아지고 눈금만 원화가 되는데, 그건 "1억 넣었으면 얼마"의 답이 아니다. 실측 차이가 크다 — 애플 10년 1억이 시점별 **14.44억** vs 오늘 고정 **11.46억**.
 
@@ -70,7 +72,7 @@ verify.mjs          →  통과해야 커밋
 // tickers.json — 검색 목록. 검색창 첫 포커스 시 지연 로드 (gzip 48KB)
 { "tickers": [{ "c":"005930", "n":"삼성전자", "s":"삼성전자", "k":"주식", "m":"KR", "o":0 }] }
 
-// aliases.json — 슬러그 별칭 → 코드. 서버가 URL 해석(308)에만 사용 (gzip 18KB)
+// aliases.json — 슬러그 별칭 → 코드. 서버가 URL 해석(308)에만 사용 (gzip 19KB)
 // kr/{code}.json  { "c":"005930", "o":0, "v":[...] }         원화
 // us/{code}.json  { "c":"AAPL", "o":522, "cur":"USD", "v":[...] }  달러
 ```
@@ -79,7 +81,9 @@ verify.mjs          →  통과해야 커밋
 
 ## 유니버스
 
-2,148종목 — 한국 주식 1,155 / 우선주 27 / 리츠 18 / ETF 300, 미국 주식 550 / ETF 98.
+`universe.json` 2,155항목 = 활성 2,147 + 비활성 8. 활성 내역은 한국 주식 1,154 / 우선주 27 / 리츠 18 / ETF 300, 미국 주식 550 / ETF 98.
+
+시세 파일은 2,153개(`kr/` 1,505 + `us/` 648)로 항목 수와 일치하지 않는다 — 비활성 8종목은 URL 유지를 위해 파일을 남기고, 활성 2종목(`0228G0`·`487400`)은 아직 수집되지 않았다. 숫자를 갱신할 때 이 어긋남을 오류로 보고 맞추려 들지 말 것.
 
 - **S&P 500 503종목 전수 포함.** `BRK.B`·`BF.B`는 네이버에서 `BRKb`·`BRKa` 형태로 조회된다
 - 미국 개별주는 거래소 목록 API가 `reutersCode`를 확정값으로 주므로 접미사 순회가 불필요하다
@@ -100,13 +104,16 @@ verify.mjs          →  통과해야 커밋
 
 ```
 src/
-├── app/          / · /[slug] · /board · /privacy · sitemap · robots · opengraph-image · api/
+├── app/          / · /[slug] · /board · /privacy · not-found · sitemap · robots · api/
+│                 /[slug]/opengraph-image.tsx  종목별 동적 OG (satori, nodejs 런타임)
+│                 icon.png · apple-icon.png · opengraph-image.png  정적 브랜드 이미지
 ├── components/   ui(shadcn) · layout · common · compare · board
 ├── lib/
-│   ├── market/   compute · slug · search · constants · registry.server · series.client
+│   ├── market/   compute · slug · search · constants · registry.server · related.server · series.client
 │   ├── chart/    geometry(순수) · palette · og-svg
-│   ├── board/    nickname · identity · moderation
-│   └── supabase/ server (service_role 전용)
+│   ├── board/    nickname · identity · moderation · request-ticker.client
+│   ├── supabase/ server (service_role 전용)
+│   └── (루트)    format · site · utils
 ├── hooks/        useElementWidth · useLocation · useMounted
 └── types/
 tests/            lib · integration · scripts
@@ -119,7 +126,8 @@ supabase/migrations/
 - **마운트 판정에 값(`theme !== undefined`)을 쓰면 안 된다.** next-themes는 클라이언트 첫 렌더에 이미 저장된 테마를 갖고 있어 서버와 갈리고, 그 차이가 트리 전체의 hydration mismatch가 된다 → `useMounted`
 - **Next 16에서 sitemap의 `id`는 Promise다.** await하지 않으면 빈 사이트맵이 조용히 생성된다
 - **루트 `not-found.tsx`에 `export const metadata`를 두면 렌더가 조용히 실패한다.** 에러도 로그도 없다
-- **satori는 CSS 변수를 못 읽고, 자식이 둘 이상인 div에 명시적 `display`를 요구한다.** 그래서 `compute`가 색을 모르고 `palette`가 cssVar/hex를 따로 준다
+- **satori는 CSS 변수를 못 읽고, 자식이 둘 이상인 div에 명시적 `display`를 요구한다.** 그래서 `compute`가 색을 모르고 `palette`가 cssVar/hex를 따로 준다. satori는 `next/og`에 번들되어 있어 `package.json`에 안 보인다 — 의존성이 없다고 판단하지 말 것
+- **OG 이미지는 두 갈래다.** 종목별 카드는 내용이 조합마다 달라 `/[slug]/opengraph-image`가 런타임에 굽고(폰트 파일을 읽으므로 `runtime = "nodejs"`, `outputFileTracingIncludes`에 `public/fonts/**` 필요), 홈·게시판·개인정보 카드는 내용이 고정이라 `build-brand-assets.mjs`가 PNG로 구워 커밋한다 — 크롤러가 SVG를 못 읽는 경우가 많고 매 배포마다 satori를 돌릴 이유가 없다
 - **`outputFileTracingIncludes`에 없는 라우트에서 `fs`로 public/data를 읽으면 배포 후 온디맨드 생성에서만 500이 난다**
 - React 19는 렌더 중 `Date.now()`·`Math.random()`과 effect 안의 `setState`를 막는다
 
@@ -144,7 +152,9 @@ supabase/migrations/
 
 ## 상태
 
-Phase 1~6 완료 (파이프라인 · 골격 · 순수모듈 · 비교페이지 · 게시판 · 자동화). 남은 것은 Vercel 배포와 검색엔진 등록.
+Phase 1~6 완료 (파이프라인 · 골격 · 순수모듈 · 비교페이지 · 게시판 · 자동화).
+
+Vercel 프로젝트는 붙었고 배포 주소를 `stock-trends-kr.vercel.app`으로 옮겼다. 배포 검증과 검색엔진 등록이 남았다.
 계획 전문은 `~/.claude/plans/kind-jumping-tiger.md`.
 
 <!-- BEGIN:nextjs-agent-rules -->

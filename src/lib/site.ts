@@ -6,13 +6,15 @@
  * path 없이 origin만 사용한다. 환경변수에 경로가 섞여 들어와도 metadataBase·canonical·OG가
  * 깨지지 않게 하기 위함이다 (lets-ko에서 검증된 패턴).
  */
+/** 배포 주소가 바뀌면 여기 한 곳만 고친다. 운영에서는 NEXT_PUBLIC_SITE_URL이 이 값을 덮는다 */
+const FALLBACK_ORIGIN = "https://stock-trends-kr.vercel.app";
+
 export const SITE_URL = (() => {
-  const raw =
-    process.env.NEXT_PUBLIC_SITE_URL ?? "https://stock-trends.vercel.app";
+  const raw = process.env.NEXT_PUBLIC_SITE_URL ?? FALLBACK_ORIGIN;
   try {
     return new URL(raw).origin;
   } catch {
-    return "https://stock-trends.vercel.app";
+    return FALLBACK_ORIGIN;
   }
 })();
 
