@@ -15,6 +15,7 @@ const FIXTURES = [
   { code: "AAPL", slug: "애플" },
   { code: "BRK-B", slug: "버크셔해서웨이classb" },
   { code: "0228G0", slug: "ace반도체plus전략산업" },
+  { code: "TQQQ", slug: "나스닥1003배tqqq" }, // 충돌 해소로 코드가 붙은 형태
 ];
 
 const resolver: SlugResolver = {
@@ -47,6 +48,12 @@ describe("normalizeSlug", () => {
 
   it("대소문자를 통일한다", () => {
     expect(normalizeSlug("AAPL")).toBe(normalizeSlug("aapl"));
+  });
+
+  it("모든 canonical 슬러그는 정규화에 불변이다", () => {
+    // 충돌 접미사에 하이픈을 쓰면(나스닥1003배-tqqq) 정규화가 하이픈을 지워
+    // 그 종목이 URL로 도달 불가능해진다. scripts/verify.mjs도 같은 검사를 한다
+    for (const f of FIXTURES) expect(normalizeSlug(f.slug)).toBe(f.slug);
   });
 });
 

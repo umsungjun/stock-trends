@@ -66,7 +66,8 @@ export const assignSlugs = (entries) => {
     // 충돌하거나 예약어면 코드를 붙여 유일하게 만든다
     const needsSuffix = group.length > 1 || RESERVED_SLUGS.has(base);
     for (const e of group) {
-      const slug = needsSuffix ? `${base}-${e.code.toLowerCase()}` : base;
+      // 접미사에 하이픈을 쓰면 안 된다 — toSlug가 하이픈을 제거하므로 파싱 시 되찾을 수 없다
+      const slug = needsSuffix ? `${base}${toSlug(e.code)}` : base;
       if (RESERVED_SLUGS.has(slug)) {
         throw new Error(`슬러그가 예약어와 충돌: ${slug} (${e.code} ${e.name}) — RESERVED_SLUGS 확인 필요`);
       }

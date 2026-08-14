@@ -152,6 +152,17 @@ const main = async () => {
     tickers.push(entry);
   }
 
+  // 비활성 종목도 목록에 남긴다 — 검색에서는 숨기지만 이미 공유된 URL은 살아 있어야 한다.
+  // 시세는 다시 수집하지 않고 기존 파일의 오프셋을 그대로 읽는다
+  for (const t of universe.tickers.filter((x) => x.active === false)) {
+    const dir = t.market === "US" ? "us" : "kr";
+    const prev = await readJsonIfExists(new URL(`${dir}/${t.code}.json`, OUT));
+    if (!prev) continue;
+    const entry = { c: t.code, n: t.name, s: t.slug, k: t.kind, m: t.market, o: prev.o, a: 0 };
+    if (t.nameEng) entry.e = t.nameEng;
+    tickers.push(entry);
+  }
+
   // ── 메타 ────────────────────────────────────────────────
   const fx = buildFxByWeek(fxDaily, weeks);
   const fxSource = fxDaily[fxDaily.length - 1]?.src ?? "naver";
@@ -173,6 +184,8 @@ const main = async () => {
   });
   const aliasChanged = await writeJsonIfChanged(new URL("aliases.json", OUT), universe.aliases ?? {});
 
+  const inactive = tickers.filter((t) => t.a === 0).length;
+  if (inactive) console.log(`비활성 ${inactive}개를 목록에 유지 (검색 제외, 직링크 유지)`);
   console.log(`\n그리드 ${weeks.length}주 (${weeks[0]} ~ ${lastWeek}) / 라벨 ${labels[0]} ~ ${labels[labels.length - 1]}`);
   console.log(`환율 ${fx.v.length}주 (오프셋 ${fx.o}, 소스 ${fxSource}) — 마지막 ${fx.v[fx.v.length - 1]}원`);
   console.log(

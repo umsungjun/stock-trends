@@ -14,6 +14,7 @@ import { fileURLToPath } from "node:url";
 
 import { readJsonIfExists } from "./lib/io.mjs";
 import { isoWeekKey, weekRange } from "./lib/week.mjs";
+import { toSlug } from "./universe/rules.mjs";
 
 const OUT = new URL("../public/data/", import.meta.url);
 
@@ -64,7 +65,10 @@ const check = async () => {
     }
   }
   const fileCount = dirs.kr.length + dirs.us.length;
-  if (fileCount !== tickers.length) fail(`파일 ${fileCount}개 ≠ tickers ${tickers.length}개`);
+  // 파일이 더 많은 것은 정상이다 — 유니버스에서 밀려난 종목도 직링크 유지를 위해 남긴다
+  if (fileCount < tickers.length) {
+    fail(`파일 ${fileCount}개 < tickers ${tickers.length}개 — 목록에 있는데 파일이 없다`);
+  }
 
   let usWithoutFx = 0;
   for (const t of tickers) {
@@ -87,6 +91,13 @@ const check = async () => {
   if (empty) fail(`슬러그 없는 종목 ${empty}개`);
   const dirty = tickers.filter((t) => /[&()+~\s./]/.test(t.s));
   if (dirty.length) fail(`슬러그에 URL 위험 문자: ${dirty.slice(0, 3).map((t) => t.s).join(", ")}`);
+
+  // 앱은 사용자 입력을 toSlug로 정규화한 뒤 조회한다. 슬러그가 정규화에 불변이 아니면
+  // 그 종목은 URL로 도달할 수 없다 (충돌 접미사에 하이픈을 쓰면 실제로 그렇게 된다)
+  const unstable = tickers.filter((t) => toSlug(t.s) !== t.s);
+  if (unstable.length) {
+    fail(`정규화에 불변이 아닌 슬러그 ${unstable.length}개: ${unstable.slice(0, 3).map((t) => `${t.s}→${toSlug(t.s)}`).join(", ")}`);
+  }
 
   return { meta, tickers, fileCount };
 };

@@ -18,6 +18,7 @@ const make = (
   offset: 0,
   englishName,
   choseong: choseong(name),
+  active: true,
 });
 
 const TICKERS = [

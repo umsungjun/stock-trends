@@ -73,6 +73,8 @@ export const matchTickers = (
   const scored: { t: Ticker; score: number }[] = [];
 
   for (const t of tickers) {
+    // 유니버스에서 밀려난 종목은 검색에 띄우지 않는다 (URL로는 여전히 도달 가능)
+    if (!t.active) continue;
     const name = t.name.toLowerCase();
     const eng = t.englishName?.toLowerCase() ?? "";
     let score = -1;

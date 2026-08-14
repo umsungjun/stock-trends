@@ -24,6 +24,8 @@ export interface RawTicker {
   e?: string;
   /** GICS sector — S&P 500 종목만 */
   g?: string;
+  /** 0이면 비활성 — 유니버스에서 밀려났지만 직링크는 살아 있다. 기본은 활성이라 필드가 없다 */
+  a?: 0;
 }
 
 /** 앱에서 다루는 종목 메타 */
@@ -38,6 +40,8 @@ export interface Ticker {
   sector?: string;
   /** 초성 검색용 — 로드 시 한 번만 계산한다 */
   choseong: string;
+  /** 검색에 노출할지. 비활성 종목은 URL 해석만 되고 검색에는 안 뜬다 */
+  active: boolean;
 }
 
 /** meta.json */

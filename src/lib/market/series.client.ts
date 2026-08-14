@@ -69,6 +69,7 @@ export const loadTickers = (): Promise<Ticker[]> => {
         englishName: t.e,
         sector: t.g,
         choseong: choseong(t.n),
+        active: t.a !== 0,
       }))
     )
     .catch((err) => {

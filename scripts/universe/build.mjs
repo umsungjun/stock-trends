@@ -46,12 +46,12 @@ const buildKr = async () => {
     if (etfCodes.has(s.code)) continue; // 국내 목록엔 ETF가 섞여 나온다
     const kind = classifyKr(s);
     if (!kind) continue; // 스팩 제외
-    stocks.push({ code: s.code, name: s.name, kind, market: "KR", src: s.code, exchange: s.market });
+    stocks.push({ code: s.code, name: s.name, kind, market: "KR", src: s.code, exchange: s.market, rank: stocks.length + 1 });
     if (stocks.length >= TARGETS.krStock) break;
   }
 
-  const etfEntries = etfs.map((e) => ({
-    code: e.code, name: e.name, kind: "ETF", market: "KR", src: e.code, exchange: "KRX",
+  const etfEntries = etfs.map((e, i) => ({
+    code: e.code, name: e.name, kind: "ETF", market: "KR", src: e.code, exchange: "KRX", rank: i + 1,
   }));
 
   return [...stocks, ...etfEntries];
@@ -85,7 +85,8 @@ const buildUs = async (aliasMap) => {
     if (!hit) { missingSp.push(s.symbol); continue; }
     picked.set(hit.reutersCode, {
       code: toAppCode(hit.symbol), name: hit.name, nameEng: hit.nameEng, kind: "주식",
-      market: "US", src: hit.reutersCode, exchange: hit.exchange, sector: s.sector, symbol: hit.symbol,
+      market: "US", src: hit.reutersCode, exchange: hit.exchange, sector: s.sector,
+      symbol: hit.symbol, marketValue: hit.marketValue,
     });
   }
 
@@ -96,6 +97,7 @@ const buildUs = async (aliasMap) => {
     picked.set(p.reutersCode, {
       code: toAppCode(p.symbol), name: p.name, nameEng: p.nameEng, kind: "주식",
       market: "US", src: p.reutersCode, exchange: p.exchange, symbol: p.symbol,
+      marketValue: p.marketValue,
     });
   }
 
@@ -114,8 +116,15 @@ const buildUs = async (aliasMap) => {
       };
     });
 
+  // 미국 개별주는 시총순으로 rank를 매긴다 (S&P 우선 삽입 순서와 무관하게)
+  const usStocks = [...picked.values()].sort(
+    (a, b) => (b.marketValue ?? 0) - (a.marketValue ?? 0)
+  );
+  usStocks.forEach((e, i) => { e.rank = i + 1; delete e.marketValue; });
+  etfEntries.forEach((e, i) => { e.rank = i + 1; });
+
   return {
-    entries: [...picked.values(), ...etfEntries],
+    entries: [...usStocks, ...etfEntries],
     missingSp, etfFailed: failed, probes, sp500Count: sp500.length,
   };
 };
