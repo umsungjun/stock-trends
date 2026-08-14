@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import { useLocationSearch } from "@/hooks/useLocation";
 import { assignSlots } from "@/lib/chart/palette";
+import { requestTicker } from "@/lib/board/request-ticker.client";
 import { compute } from "@/lib/market/compute";
 import { DEFAULT_AMOUNT, DEFAULT_PERIOD } from "@/lib/market/constants";
 import { loadSeries, primeSeries } from "@/lib/market/series.client";
@@ -127,11 +128,7 @@ export default function CompareView({
       <TickerSearch
         picked={picks.map((t) => t.code)}
         onPick={addTicker}
-        onRequest={(q) =>
-          toast.info(`"${q}" 추가 요청은 곧 지원됩니다`, {
-            description: "게시판 기능과 함께 열립니다.",
-          })
-        }
+        onRequest={requestTicker}
       />
 
       <PickChips

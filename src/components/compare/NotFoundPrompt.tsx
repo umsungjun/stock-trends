@@ -3,9 +3,8 @@
 import Link from "next/link";
 
 import { useLocationPathname } from "@/hooks/useLocation";
+import { requestTicker } from "@/lib/board/request-ticker.client";
 import { SEPARATOR } from "@/lib/market/slug";
-
-import { toast } from "sonner";
 
 /**
  * @description 없는 슬러그로 들어온 방문자에게 시도한 종목명을 보여주고 추가 요청을 유도한다.
@@ -55,11 +54,7 @@ export default function NotFoundPrompt() {
         </Link>
         <button
           type="button"
-          onClick={() =>
-            toast.info(`"${attempted[0]}" 추가 요청은 곧 지원됩니다`, {
-              description: "게시판 기능과 함께 열립니다.",
-            })
-          }
+          onClick={() => requestTicker(attempted[0])}
           className="border-hairline hover:bg-chip cursor-pointer border px-3 py-1.5 text-[13px] transition-colors"
         >
           이 종목 추가 요청하기
