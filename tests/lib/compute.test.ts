@@ -8,7 +8,7 @@ import {
   compute,
   computeRows,
   resolveRange,
-} from "./compute";
+} from "@/lib/market/compute";
 
 /** 그리드 길이 */
 const N = 600;

@@ -10,7 +10,7 @@ import {
   chartLayout,
   indexFromPointer,
   placeEndLabels,
-} from "./geometry";
+} from "@/lib/chart/geometry";
 
 const row = (code: string, values: number[]): ComputedRow => ({
   code,

@@ -6,7 +6,7 @@ import {
   isReserved,
   normalizeSlug,
   parseSlug,
-} from "./slug";
+} from "@/lib/market/slug";
 
 /** 실제 유니버스에서 뽑은 까다로운 케이스들 */
 const FIXTURES = [

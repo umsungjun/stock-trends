@@ -10,7 +10,8 @@ npm trends 형식의 주식 비교 도구. 서비스명 **Stock Trends**(화면 
 node scripts/fetch-fx.mjs        # 환율 증분 수집 → data/cache/fx-daily.ndjson
 node scripts/fetch.mjs           # 시세 수집 → public/data/**
 node scripts/verify.mjs          # 산출물 검증 (커밋 전 필수)
-node --test scripts/lib/*.test.mjs
+pnpm test                        # vitest + node --test
+node --test tests/scripts/*.test.mjs
 
 node scripts/universe/build.mjs      # 유니버스 재생성 (월 1회, PR로만)
 node scripts/seed-etf-aliases.mjs    # 미국 ETF 한글명 시드 (1회성)
@@ -24,7 +25,7 @@ node scripts/seed-etf-aliases.mjs    # 미국 ETF 한글명 시드 (1회성)
 - 한국(`siseJson`): 그 주의 **마지막 거래일** (`20260807`=금)
 - 미국(`chart/foreign`): 그 주의 **일요일**, 주 시작 앵커 (`20260809`=일)
 
-미국 `20260809`는 ISO로 W32지만 실제로 커버하는 거래주는 8/10~8/14 = **W33**이다. 그래서 미국 바는 반드시 `isoWeekKey(addDays(date, 1))`로 매핑한다. 보정을 빠뜨리면 미국 계열 전체가 한 주씩 밀린 채 차트가 "대충 맞아 보여서" 발견이 매우 늦는다. `scripts/lib/week.test.mjs`가 이 규칙을 회귀 테스트로 못 박고 있으니 **절대 지우지 말 것.**
+미국 `20260809`는 ISO로 W32지만 실제로 커버하는 거래주는 8/10~8/14 = **W33**이다. 그래서 미국 바는 반드시 `isoWeekKey(addDays(date, 1))`로 매핑한다. 보정을 빠뜨리면 미국 계열 전체가 한 주씩 밀린 채 차트가 "대충 맞아 보여서" 발견이 매우 늦는다. `tests/scripts/week.test.mjs`가 이 규칙을 회귀 테스트로 못 박고 있으니 **절대 지우지 말 것.**
 
 거래일 합집합 그리드는 쓸 수 없다. 한국 금요일과 미국 일요일은 구조적으로 절대 같은 날이 아니라 매주 두 칸이 생기고 모든 계열이 계단형이 된다.
 

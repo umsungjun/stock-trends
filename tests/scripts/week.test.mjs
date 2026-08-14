@@ -16,7 +16,7 @@ import {
   weekKeyToFriday,
   weekKeyToMonday,
   weekRange,
-} from "./week.mjs";
+} from "../../scripts/lib/week.mjs";
 
 describe("isoWeekKey", () => {
   it("한국 바(마지막 거래일)를 그대로 매핑한다", () => {

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { MAX_PICKS, assignSlots, slotColor, slotHex } from "./palette";
+import { MAX_PICKS, assignSlots, slotColor, slotHex } from "@/lib/chart/palette";
 
 describe("assignSlots — 같은 조합이면 언제나 같은 색", () => {
   it("순서를 바꿔도 배정이 같다", () => {

@@ -2,7 +2,7 @@ import type { Ticker } from "@/types/market";
 
 import { describe, expect, it } from "vitest";
 
-import { choseong, matchTickers } from "./search";
+import { choseong, matchTickers } from "@/lib/market/search";
 
 const make = (
   code: string,

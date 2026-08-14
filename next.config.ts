@@ -11,8 +11,9 @@ const nextConfig: NextConfig = {
   outputFileTracingIncludes: {
     "/": ["./public/data/**"],
     "/[slug]": ["./public/data/**"],
-    "/[slug]/opengraph-image": ["./public/data/**"],
-    "/sitemap.xml": ["./public/data/**"],
+    "/[slug]/opengraph-image": ["./public/data/**", "./public/fonts/**"],
+    "/sitemap/[__metadata_id__]": ["./public/data/**"],
+    "/robots.txt": ["./public/data/**"],
   },
 };
 

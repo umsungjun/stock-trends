@@ -4,7 +4,7 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 
-import { compute } from "./compute";
+import { compute } from "@/lib/market/compute";
 
 /**
  * 실제 산출물(public/data)로 도는 통합 테스트.
