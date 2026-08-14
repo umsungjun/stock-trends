@@ -88,6 +88,15 @@ const main = async () => {
 
   const active = universe.tickers.filter((t) => t.active !== false);
   const lastWeek = latestPublishableWeek();
+
+  // 이번 주차가 이미 발행돼 있으면 수집 자체를 건너뛴다 — 일요일 재시도가 전 종목을 다시 받는 것을 막는다.
+  // 커밋된 meta.json을 보므로, 토요일이 verify에서 막혀 커밋되지 않았다면 여기 걸리지 않고 정상 재시도된다
+  const published = await readJsonIfExists(new URL("meta.json", OUT));
+  if (published?.asOfWeek === lastWeek && !process.env.FORCE_REFETCH) {
+    console.log(`${lastWeek} 이미 발행됨 — 수집 생략 (강제 수집은 FORCE_REFETCH=1)`);
+    return;
+  }
+
   console.log(`시세 수집 — ${active.length}종목, 상한 ${lastWeek} (진행 중인 주차는 발행하지 않음)\n`);
 
   // ── 수집 ────────────────────────────────────────────────
