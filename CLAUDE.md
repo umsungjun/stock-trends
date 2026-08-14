@@ -16,8 +16,11 @@ pnpm data:fetch                  # 시세만
 pnpm data:popular                # 사전 생성 슬러그 목록
 pnpm data:verify                 # 산출물 검증 (커밋 전 필수)
 
+pnpm requests                    # 대기 중인 종목 추가 요청 (득표순)
+
 node scripts/universe/build.mjs      # 유니버스 재생성 (월 1회, PR로만)
 node scripts/seed-etf-aliases.mjs    # 미국 ETF 한글명 시드 (1회성)
+node scripts/build-brand-assets.mjs  # OG 카드·파비콘 PNG 재생성 (로고 변경 시)
 ```
 
 ## 핵심 설계 결정
@@ -25,6 +28,7 @@ node scripts/seed-etf-aliases.mjs    # 미국 ETF 한글명 시드 (1회성)
 **조회 시점에 시세 API를 부르지 않는다.** 주간 데이터라 한 달 내내 같은 배열을 반복해 읽을 뿐이라 DB가 할 일이 없다. 빌드 타임에 정적 JSON을 굽고 CDN에서 서빙한다 — 광고 수익 모델이라 사용자 증가가 서버 비용으로 이어지면 안 된다는 제약에서 나온 결정이다. Supabase는 게시판·종목요청처럼 **쓰기가 필요한 것에만** 쓴다.
 
 **⚠️ 주봉 바의 날짜 관례가 시장마다 다르다 — 이 프로젝트 최대의 함정.**
+
 - 한국(`siseJson`): 그 주의 **마지막 거래일** (`20260807`=금)
 - 미국(`chart/foreign`): 그 주의 **일요일**, 주 시작 앵커 (`20260809`=일)
 
@@ -54,6 +58,7 @@ verify.mjs          →  통과해야 커밋
 `data/`는 빌드 입력(커밋하지만 배포엔 안 감), `public/data/`는 산출물(커밋 + CDN 배포). 둘 다 저장소 안에서 관리한다 — 런타임 외부 의존이 0이고, 값이 이상할 때 `git log`로 추적되며, 롤백이 `git revert` 한 번이다.
 
 ### 산출물 스키마
+
 ```jsonc
 // meta.json — 모든 페이지가 필요, 작게 유지 (gzip 6.2KB)
 { "v": 2, "asOfWeek": "2026-W32", "asOfDate": "20260807",
