@@ -1,0 +1,2 @@
+# 상위 scripts/.prettierignore와 같은 이유 — 편집 훅이 파일 디렉터리 기준으로 prettier를 돌린다.
+*.mjs
