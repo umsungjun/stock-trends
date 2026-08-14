@@ -12,6 +12,7 @@ const nextConfig: NextConfig = {
     "/": ["./public/data/**"],
     "/[slug]": ["./public/data/**"],
     "/[slug]/opengraph-image": ["./public/data/**", "./public/fonts/**"],
+    "/opengraph-image": ["./public/fonts/**"],
     "/sitemap/[__metadata_id__]": ["./public/data/**"],
     "/robots.txt": ["./public/data/**"],
   },
