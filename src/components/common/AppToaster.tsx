@@ -1,7 +1,5 @@
 "use client";
 
-import { useTheme } from "next-themes";
-
 import { Toaster } from "sonner";
 
 /**
@@ -13,15 +11,13 @@ import { Toaster } from "sonner";
  * 왜 10년을 눌렀는데 6년만 나오는지 알 방법이 없어진다.
  */
 export default function AppToaster() {
-  const { resolvedTheme } = useTheme();
-
   // richColors: 성공·실패 상태색 활성화. 모바일 비중을 고려해 하단 중앙 배치
   return (
     <Toaster
       position="bottom-center"
       richColors
       duration={3000}
-      theme={resolvedTheme === "dark" ? "dark" : "light"}
+      theme="system"
     />
   );
 }

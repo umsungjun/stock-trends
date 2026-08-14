@@ -96,9 +96,14 @@ export default function BoardView({
             <li key={post.id} className="px-4 py-3">
               <div className="flex items-center gap-2">
                 <span className="text-[13px] font-medium">{post.nickname}</span>
-                <span className="text-ink-muted text-[12px]">
+                {/* 서버 렌더 시각과 클라이언트 시각이 달라 텍스트가 갈린다 — 이 요소만 억제한다 */}
+                <time
+                  dateTime={post.createdAt}
+                  suppressHydrationWarning
+                  className="text-ink-muted text-[12px]"
+                >
                   {timeAgo(post.createdAt)}
-                </span>
+                </time>
                 {tokens[post.id] && (
                   <button
                     type="button"

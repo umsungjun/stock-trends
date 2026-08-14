@@ -174,6 +174,7 @@ export async function POST(request: NextRequest) {
     .single();
 
   if (error || !data) {
+    console.error("[ticker-request]", error?.message);
     return NextResponse.json(
       { error: "요청을 저장하지 못했습니다" },
       { status: 500 }

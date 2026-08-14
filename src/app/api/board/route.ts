@@ -55,6 +55,8 @@ export async function GET(request: NextRequest) {
 
   const { data, error } = await query;
   if (error) {
+    // 에러를 삼키면 원인 추적이 불가능하다 — 서버 로그에는 남긴다
+    console.error("[board:list]", error.message, error.details ?? "");
     return NextResponse.json(
       { error: "목록을 불러오지 못했습니다" },
       { status: 500 }
@@ -155,6 +157,7 @@ export async function POST(request: NextRequest) {
     .single();
 
   if (error || !data) {
+    console.error("[board:create]", error?.message, error?.details ?? "");
     return NextResponse.json({ error: "등록하지 못했습니다" }, { status: 500 });
   }
 

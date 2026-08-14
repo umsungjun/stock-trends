@@ -164,7 +164,18 @@ alter table ticker_request_votes enable row level security;
 alter table blocked_terms        enable row level security;
 alter table banned_ip_hashes     enable row level security;
 
--- Data API 자동 노출을 껐더라도 명시적으로 회수해 둔다
+-- anon·authenticated는 명시적으로 회수한다
 revoke all on posts, post_reports, ticker_requests,
               ticker_request_votes, blocked_terms, banned_ip_hashes
   from anon, authenticated;
+
+-- ⚠️ service_role에는 반드시 명시적으로 부여해야 한다.
+-- 프로젝트 생성 시 "Automatically expose new tables"를 끄면 service_role에도 기본 권한이 가지 않아
+-- 서버 라우트가 "permission denied for table posts"로 전부 실패한다.
+grant usage on schema public to service_role;
+grant all on posts, post_reports, ticker_requests,
+             ticker_request_votes, blocked_terms, banned_ip_hashes
+  to service_role;
+
+-- 앞으로 추가할 테이블에도 같은 권한이 가도록
+alter default privileges in schema public grant all on tables to service_role;

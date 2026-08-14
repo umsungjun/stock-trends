@@ -49,6 +49,7 @@ export async function DELETE(
     .eq("id", id);
 
   if (error) {
+    console.error("[board:delete]", error.message);
     return NextResponse.json({ error: "삭제하지 못했습니다" }, { status: 500 });
   }
   return NextResponse.json({ ok: true });
