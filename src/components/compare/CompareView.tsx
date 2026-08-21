@@ -3,8 +3,8 @@
 import { useEffect, useMemo, useState } from "react";
 
 import { useLocationSearch } from "@/hooks/useLocation";
-import { assignSlots } from "@/lib/chart/palette";
 import { requestTicker } from "@/lib/board/request-ticker.client";
+import { assignSlots } from "@/lib/chart/palette";
 import { compute } from "@/lib/market/compute";
 import { DEFAULT_AMOUNT, DEFAULT_PERIOD } from "@/lib/market/constants";
 import { loadSeries, primeSeries } from "@/lib/market/series.client";
@@ -12,11 +12,13 @@ import type { PeriodId, Series, Ticker } from "@/types/market";
 
 import { toast } from "sonner";
 
+import CompareHeader from "./CompareHeader";
 import ControlBar from "./ControlBar";
 import PickChips from "./PickChips";
 import RangeNotice from "./RangeNotice";
 import ResultTable from "./ResultTable";
 import ShareBar from "./ShareBar";
+import StarterChips from "./StarterChips";
 import TickerSearch from "./TickerSearch";
 import ValueChart from "./ValueChart";
 
@@ -27,6 +29,8 @@ interface CompareViewProps {
   initialTickers: Ticker[];
   /** 서버가 이미 읽어둔 시계열 — 첫 렌더에서 fetch가 없다 */
   initialSeries: Series[];
+  /** 빈 화면에서 바로 담을 수 있는 추천 종목 */
+  starters: Ticker[];
   weeks: string[];
   fx: { o: number; v: number[] };
   host: string;
@@ -36,13 +40,16 @@ interface CompareViewProps {
  * @description 비교 도구의 유일한 클라이언트 경계.
  *
  * 상태(picks·period·amount)가 차트·표·칩·공유링크 전부에 걸쳐 있어 더 잘게 쪼개면
- * Context나 prop drilling이 필요해진다. 대신 SEO용 서버 컴포넌트들은 밖에 둬서
- * JS 번들에 들어가지 않게 했다.
+ * Context나 prop drilling이 필요해진다. 제목과 요약문까지 이 경계 안에 있는 이유는
+ * 종목을 바꿀 때 함께 갱신돼야 하기 때문이다 — 내부 링크·출처 고지처럼 picks와 무관한
+ * 서버 컴포넌트만 밖에 남겼다.
  *
  * URL은 세션 중에는 미러다 — replaceState로만 갱신한다. router.push를 쓰면
  * 이미 클라이언트가 가진 데이터를 서버에서 다시 받아오고 차트가 깜빡인다.
+ * picks가 비면 경로가 `/`가 되는데, 홈이 빈 상태를 렌더하므로 그 URL을 다시 읽어도 같은 화면이다.
  * @param props.initialTickers - 초기 종목 메타
  * @param props.initialSeries - 서버가 주입한 시계열
+ * @param props.starters - 빈 화면 추천 종목
  * @param props.weeks - 주차 라벨
  * @param props.fx - 환율 시계열
  * @param props.host - 공유 URL 표시용 호스트
@@ -50,6 +57,7 @@ interface CompareViewProps {
 export default function CompareView({
   initialTickers,
   initialSeries,
+  starters,
   weeks,
   fx,
   host,
@@ -125,11 +133,24 @@ export default function CompareView({
 
   return (
     <div className="flex flex-col gap-4">
+      <CompareHeader
+        picks={picks}
+        rows={rows}
+        range={range}
+        names={names}
+        weeks={weeks}
+        amount={amount}
+      />
+
       <TickerSearch
         picked={picks.map((t) => t.code)}
         onPick={addTicker}
         onRequest={requestTicker}
       />
+
+      {!picks.length && (
+        <StarterChips starters={starters} onPick={addTicker} />
+      )}
 
       <PickChips
         picks={picks}

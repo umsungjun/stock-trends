@@ -1,5 +1,6 @@
 import { cache } from "react";
 
+import { STARTER_CODES } from "@/lib/market/constants";
 import { choseong } from "@/lib/market/search";
 import type { SlugResolver } from "@/lib/market/slug";
 import type {
@@ -75,6 +76,15 @@ export const getTickerMap = cache((): Promise<Map<string, Ticker>> =>
     return new Map(tickers.map((t) => [t.code, t]));
   })
 );
+
+/**
+ * @description 빈 화면 추천 칩용 종목 메타. 홈과 비교 페이지가 같은 목록을 쓴다.
+ * 수집이 실패해 목록에 없는 코드는 조용히 빠진다.
+ */
+export const getStarterTickers = cache(async (): Promise<Ticker[]> => {
+  const map = await getTickerMap();
+  return STARTER_CODES.map((c) => map.get(c)).filter((t) => t !== undefined);
+});
 
 /**
  * @description 슬러그 해석에 쓰는 조회 맵. 별칭은 서버만 필요하므로 여기서만 읽는다
