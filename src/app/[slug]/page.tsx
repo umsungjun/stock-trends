@@ -3,7 +3,6 @@ import { notFound, permanentRedirect } from "next/navigation";
 
 import CompareView from "@/components/compare/CompareView";
 import DataFootnote from "@/components/compare/DataFootnote";
-import HeadlineSummary from "@/components/compare/HeadlineSummary";
 import PopularComparisons from "@/components/compare/PopularComparisons";
 import PageContainer from "@/components/layout/PageContainer";
 import { pct, won, ymd } from "@/lib/format";
@@ -14,6 +13,7 @@ import {
   getPopularSlugs,
   getSeriesMany,
   getSlugResolver,
+  getStarterTickers,
   getTickerMap,
 } from "@/lib/market/registry.server";
 import { getRelatedComparisons } from "@/lib/market/related.server";
@@ -109,7 +109,7 @@ export default async function ComparePage({
   // 해석 실패는 404로 보낸다. 200으로 응답하면 오타 URL이 소프트 404로 색인에 쌓인다
   if (!data) notFound();
 
-  const { parsed, meta, tickers, series, range, rows } = data;
+  const { parsed, meta, tickers, series } = data;
 
   // 별칭·대소문자·NFD·중복·6개 초과를 전부 여기서 흡수해 링크 자산을 canonical 하나로 모은다
   // 한글 경로를 그대로 넘기면 Location 헤더(ByteString)로 못 담아 터진다
@@ -117,37 +117,22 @@ export default async function ComparePage({
     permanentRedirect(`/${encodeURIComponent(parsed.canonical)}`);
   }
 
-  const names = Object.fromEntries(tickers.map((t) => [t.code, t.name]));
-  const related = await getRelatedComparisons(parsed.codes);
+  // 종목을 다 지우면 이 페이지도 빈 상태가 되므로 복구 수단이 필요하다
+  const [related, starters] = await Promise.all([
+    getRelatedComparisons(parsed.codes),
+    getStarterTickers(),
+  ]);
 
   return (
     <PageContainer>
-      <h1 className="text-2xl font-bold tracking-tight">
-        {tickers.map((t) => t.name).join(" vs ")}
-      </h1>
-      <p className="text-ink-2 mt-1 text-[13px]">
-        같은 금액을 넣었다면 지금 얼마가 됐을까요
-      </p>
-
-      <div className="mt-5">
-        <HeadlineSummary
-          rows={rows}
-          range={range}
-          names={names}
-          weeks={meta.weeks}
-          amount={DEFAULT_AMOUNT}
-        />
-      </div>
-
-      <div className="mt-4">
-        <CompareView
-          initialTickers={tickers}
-          initialSeries={series}
-          weeks={meta.weeks}
-          fx={meta.fx}
-          host={new URL(SITE_URL).host}
-        />
-      </div>
+      <CompareView
+        initialTickers={tickers}
+        initialSeries={series}
+        starters={starters}
+        weeks={meta.weeks}
+        fx={meta.fx}
+        host={new URL(SITE_URL).host}
+      />
 
       <PopularComparisons items={related} />
 

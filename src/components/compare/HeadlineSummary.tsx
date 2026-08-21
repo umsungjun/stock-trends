@@ -10,10 +10,11 @@ interface HeadlineSummaryProps {
 }
 
 /**
- * @description 비교 결과를 한국어 문장으로 요약하는 서버 컴포넌트.
+ * @description 비교 결과를 한국어 문장으로 요약한다.
  *
  * 검색 결과에서 순위와 클릭을 만드는 건 SVG path가 아니라 이 문장의 숫자다.
- * 서버 컴포넌트라 JS 번들에 들어가지 않으면서 초기 HTML에는 그대로 실린다.
+ * CompareHeader를 통해 클라이언트 트리에 있지만 SSR 출력이 초기 HTML에 그대로 실려
+ * 크롤러가 읽는 내용은 같다. 대신 기간·투자금을 바꾸면 문장도 따라 갱신된다.
  * @param props.rows - 계산된 계열
  * @param props.range - 비교 구간
  * @param props.names - 코드별 표시명

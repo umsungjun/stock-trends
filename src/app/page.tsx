@@ -1,68 +1,34 @@
 import CompareView from "@/components/compare/CompareView";
 import DataFootnote from "@/components/compare/DataFootnote";
-import HeadlineSummary from "@/components/compare/HeadlineSummary";
 import PopularComparisons from "@/components/compare/PopularComparisons";
 import PageContainer from "@/components/layout/PageContainer";
-import { compute } from "@/lib/market/compute";
-import {
-  DEFAULT_AMOUNT,
-  DEFAULT_CODES,
-  DEFAULT_PERIOD,
-} from "@/lib/market/constants";
-import {
-  getMeta,
-  getSeriesMany,
-  getTickerMap,
-} from "@/lib/market/registry.server";
+import { getMeta, getStarterTickers } from "@/lib/market/registry.server";
 import { getRelatedComparisons } from "@/lib/market/related.server";
-import { HOME_HEADING, HOME_SUBHEADING, SITE_URL } from "@/lib/site";
+import { SITE_URL } from "@/lib/site";
 
 export const dynamic = "force-static";
 
+/**
+ * 홈은 빈 비교 화면이다. 기본 조합으로 채우지 않는 이유는 URL 왕복 대칭이다 —
+ * `/`가 종목 없음을 뜻해야 비교 중 종목을 다 지운 뒤 새로고침해도 같은 상태로 돌아온다.
+ * 시작점은 추천 칩과 아래 내부 링크가 맡는다.
+ */
 export default async function HomePage() {
-  const [meta, tickerMap] = await Promise.all([getMeta(), getTickerMap()]);
+  const [meta, starters] = await Promise.all([getMeta(), getStarterTickers()]);
 
-  const tickers = DEFAULT_CODES.map((c) => tickerMap.get(c)).filter(
-    (t) => t !== undefined
-  );
-  const series = await getSeriesMany(
-    tickers.map((t) => ({ code: t.code, market: t.market }))
-  );
-
-  const { range, rows } = compute(
-    series,
-    DEFAULT_PERIOD,
-    DEFAULT_AMOUNT,
-    meta.weeks.length,
-    meta.fx
-  );
-
-  const related = await getRelatedComparisons(DEFAULT_CODES);
+  // 현재 종목이 없으므로 수기 라이벌 조합으로 채워진다
+  const related = await getRelatedComparisons([]);
 
   return (
     <PageContainer>
-      <h1 className="text-2xl font-bold tracking-tight">{HOME_HEADING}</h1>
-      <p className="text-ink-2 mt-1 text-[13px]">{HOME_SUBHEADING}</p>
-
-      <div className="mt-5">
-        <HeadlineSummary
-          rows={rows}
-          range={range}
-          names={Object.fromEntries(tickers.map((t) => [t.code, t.name]))}
-          weeks={meta.weeks}
-          amount={DEFAULT_AMOUNT}
-        />
-      </div>
-
-      <div className="mt-4">
-        <CompareView
-          initialTickers={tickers}
-          initialSeries={series}
-          weeks={meta.weeks}
-          fx={meta.fx}
-          host={new URL(SITE_URL).host}
-        />
-      </div>
+      <CompareView
+        initialTickers={[]}
+        initialSeries={[]}
+        starters={starters}
+        weeks={meta.weeks}
+        fx={meta.fx}
+        host={new URL(SITE_URL).host}
+      />
 
       <PopularComparisons items={related} />
 

@@ -108,6 +108,8 @@ src/
 │                 /[slug]/opengraph-image.tsx  종목별 동적 OG (satori, nodejs 런타임)
 │                 icon.png · apple-icon.png · opengraph-image.png  정적 브랜드 이미지
 ├── components/   ui(shadcn) · layout · common · compare · board
+│                 compare/CompareView가 유일한 클라이언트 경계 — 제목·요약문(CompareHeader)까지
+│                 그 안에 있다. 밖에 남은 서버 컴포넌트는 picks와 무관한 것뿐(PopularComparisons · DataFootnote)
 ├── lib/
 │   ├── market/   compute · slug · search · constants · registry.server · related.server · series.client
 │   ├── chart/    geometry(순수) · palette · og-svg
@@ -122,6 +124,7 @@ supabase/migrations/
 
 ### 앱에서 반복해서 발목을 잡은 것들
 
+- **상태를 URL에 쓰면 그 URL을 다시 읽었을 때 같은 상태가 나와야 한다.** 한때 홈이 기본 조합(삼성전자·애플)을 렌더하는데 종목을 다 지운 경로도 `/`였다. 쓰기와 읽기가 어긋나 새로고침·모바일 탭 재로드·뒤로가기 중 하나만 끼면 지운 종목이 부활하고, 그 위에 검색으로 고른 종목이 얹혔다. 지금은 `/`가 빈 상태를 뜻하고 시작점은 `StarterChips`가 맡는다
 - **`searchParams`를 서버에서 읽으면 정적 생성이 통째로 깨진다.** 쿼리는 `useLocation`(useSyncExternalStore)으로 클라이언트에서만 읽는다
 - **마운트 판정에 값(`theme !== undefined`)을 쓰면 안 된다.** next-themes는 클라이언트 첫 렌더에 이미 저장된 테마를 갖고 있어 서버와 갈리고, 그 차이가 트리 전체의 hydration mismatch가 된다 → `useMounted`
 - **Next 16에서 sitemap의 `id`는 Promise다.** await하지 않으면 빈 사이트맵이 조용히 생성된다

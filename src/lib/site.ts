@@ -36,6 +36,9 @@ export const HOME_TITLE = "국내·미국 주식 수익률 비교";
 export const HOME_HEADING = "국내 주식, 미국 주식 한눈에 수익률 비교";
 export const HOME_SUBHEADING = "그때 같은 금액을 넣었다면 지금 얼마가 됐을까요";
 
+/** 종목이 담긴 상태의 부제. 빈 상태에서는 HOME_SUBHEADING을 쓴다 */
+export const COMPARE_SUBHEADING = "같은 금액을 넣었다면 지금 얼마가 됐을까요";
+
 /**
  * 검색 스니펫. 구체적인 종목·지수 이름을 앞에 두면 "내가 찾던 게 여기 있다"가 즉시 읽히고,
  * "S&P500 수익률"·"나스닥 비교" 같은 검색어도 함께 커버한다.
