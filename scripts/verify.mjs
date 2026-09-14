@@ -14,6 +14,7 @@ import { readFile, readdir } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 
 import { readJsonIfExists } from "./lib/io.mjs";
+import { isUniformRescale } from "./lib/rescale.mjs";
 import { isoWeekKey, weekRange } from "./lib/week.mjs";
 import { toSlug } from "./universe/rules.mjs";
 
@@ -113,9 +114,14 @@ const REWRITE_RATIO = 0.02;
 /**
  * @description 과거 구간이 대량으로 다시 쓰였는지 검사한다.
  *
- * 액면분할은 종목 단위로 일어나므로 몇 개는 정상이다. 하지만 수백 개가 한꺼번에 바뀌면
- * 소스의 조정 기준이 통째로 달라진 것이고, 그대로 커밋하면 전 구간 수익률이 조용히 틀어진다.
- * 정당한 경우에는 ALLOW_HISTORY_REWRITE=1로 통과시킨다.
+ * 소스의 조정 기준이 통째로 달라지면 전 구간 수익률이 조용히 틀어지므로 커밋을 막는다.
+ *
+ * 단, 전 구간이 같은 비율로 곱해진 것은 액면분할·무상증자라 수익률이 불변이므로 세지 않는다.
+ * 개수만 세던 시절에는 이 정상 변경이 임계를 넘겨 커밋이 막혔고, 막힌 다음 주에는 2주치가
+ * 누적돼 더 확실히 걸렸다 — 2026-08-29부터 5주 연속 실패한 원인이 이 자기 악화 구조였다.
+ *
+ * 판정을 피해 갈 수 없는 변경(배당 반영 시작·집계 버그)은 비율이 흔들려 그대로 걸린다.
+ * 그래도 정당한 경우에는 ALLOW_HISTORY_REWRITE=1로 통과시킨다.
  * @param total - 전체 종목 수
  */
 const checkHistoryRewrite = async (total) => {
@@ -136,6 +142,7 @@ const checkHistoryRewrite = async (total) => {
   if (!changed.length) return;
 
   let rewritten = 0;
+  let rescaled = 0;
   const samples = [];
 
   for (const file of changed) {
@@ -153,10 +160,16 @@ const checkHistoryRewrite = async (total) => {
     const movedStart = prev.o !== curr.o;
     const pastChanged = prev.v.slice(0, head).some((v, i) => v !== curr.v[i]);
 
-    if (movedStart || pastChanged) {
-      rewritten++;
-      if (samples.length < 5) samples.push(file.split("/").pop());
+    if (!movedStart && !pastChanged) continue;
+
+    // 오프셋이 움직였으면 상장일 자체가 달라진 것이라 스케일 판정 대상이 아니다
+    if (!movedStart && isUniformRescale(prev.v, curr.v, head)) {
+      rescaled++;
+      continue;
     }
+
+    rewritten++;
+    if (samples.length < 5) samples.push(file.split("/").pop());
   }
 
   const ratio = total ? rewritten / total : 0;
@@ -167,7 +180,10 @@ const checkHistoryRewrite = async (total) => {
         `정당한 변경이면 ALLOW_HISTORY_REWRITE=1로 재실행하세요`
     );
   } else if (rewritten) {
-    console.log(`  과거 구간 변경 ${rewritten}개 (액면분할 등, 허용 범위)`);
+    console.log(`  과거 구간 변경 ${rewritten}개 (허용 범위)`);
+  }
+  if (rescaled) {
+    console.log(`  균일 재스케일 ${rescaled}개 — 액면분할·무상증자로 보고 제외 (수익률 불변)`);
   }
 };
 
