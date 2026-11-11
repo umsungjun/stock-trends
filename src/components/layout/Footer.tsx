@@ -49,6 +49,15 @@ export default function Footer() {
           <Link href="/board" className="hover:text-ink-2">
             건의사항
           </Link>
+          {/* noreferrer 를 빼야 umsungjun.com 유입 경로에 이 사이트가 잡힌다 */}
+          <a
+            href="https://umsungjun.com"
+            target="_blank"
+            rel="noopener"
+            className="hover:text-ink-2"
+          >
+            만든 사람
+          </a>
           <a
             href="https://github.com/umsungjun"
             target="_blank"
